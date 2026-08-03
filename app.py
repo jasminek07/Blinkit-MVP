@@ -579,7 +579,7 @@ def render_cart_drawer():
     # Header Row
     h_col1, h_col2 = st.columns([7, 3])
     with h_col1:
-        st.markdown('<h3 style="font-family: \'Outfit\', sans-serif; font-size: 18px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>', unsafe_allow_html=True)
+        st.markdown('<h3 style="font-family: \'Outfit\', sans-serif; font-size: 21px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>', unsafe_allow_html=True)
     with h_col2:
         if st.button("✕ Close", key="cart_drawer_close_btn", use_container_width=True):
             st.session_state.show_cart = False
@@ -588,10 +588,10 @@ def render_cart_drawer():
     # If cart is empty
     if not st.session_state.cart:
         st.markdown(textwrap.dedent("""
-        <div style="background: white; border-radius: 16px; padding: 30px 16px; text-align: center; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
-            <div style="font-size: 40px; margin-bottom: 8px;">🛒</div>
-            <h4 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0;">Your cart is empty</h4>
-            <p style="font-size: 12px; color: #64748b; margin: 0;">Explore fresh products and add items to unlock 10-minute delivery in DLF Phase 3!</p>
+        <div style="background: white; border-radius: 16px; padding: 32px 18px; text-align: center; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+            <div style="font-size: 48px; margin-bottom: 10px;">🛒</div>
+            <h4 style="font-size: 18px; font-weight: 900; color: #0f172a; margin: 0 0 8px 0;">Your cart is empty</h4>
+            <p style="font-size: 14px; color: #64748b; margin: 0; line-height: 1.4;">Explore fresh products and add items to unlock 10-minute delivery in DLF Phase 3!</p>
         </div>
         """), unsafe_allow_html=True)
         return
@@ -605,12 +605,12 @@ def render_cart_drawer():
 
     # Delivery Badge
     st.markdown(textwrap.dedent(f"""
-    <div style="background: white; border-radius: 14px; padding: 12px 14px; border: 1px solid #e2e8f0; margin-top: 10px; margin-bottom: 10px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
-        <div style="display: flex; align-items: center; gap: 10px;">
-            <span style="font-size: 20px;">⏱️</span>
+    <div style="background: white; border-radius: 14px; padding: 14px 16px; border: 1px solid #e2e8f0; margin-top: 10px; margin-bottom: 12px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-size: 24px;">⏱️</span>
             <div>
-                <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 0;">Delivery in 16 minutes</h4>
-                <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>
+                <h4 style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 0;">Delivery in 16 minutes</h4>
+                <p style="font-size: 13px; color: #64748b; margin: 2px 0 0 0; font-weight: 600;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>
             </div>
         </div>
     </div>
@@ -620,12 +620,12 @@ def render_cart_drawer():
     for sku_id, item in list(st.session_state.cart.items()):
         img = get_product_image_url(sku_id, item["name"])
         st.markdown(textwrap.dedent(f"""
-        <div style="background: white; border-radius: 12px; padding: 10px 12px; border: 1px solid #e2e8f0; margin-bottom: 6px; font-family: 'Outfit', sans-serif;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <img src="{img}" style="width: 42px; height: 42px; object-fit: contain; border-radius: 6px; border: 1px solid #e2e8f0; padding: 2px;">
+        <div style="background: white; border-radius: 12px; padding: 12px 14px; border: 1px solid #e2e8f0; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="{img}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0; padding: 3px; background: white; flex-shrink: 0;">
                 <div style="flex: 1;">
-                    <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 0; line-height: 1.2;">{item["name"]}</p>
-                    <p style="font-size: 11px; font-weight: 900; color: #0f172a; margin: 2px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>
+                    <p style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.3;">{item["name"]}</p>
+                    <p style="font-size: 14px; font-weight: 900; color: #0C831F; margin: 3px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>
                 </div>
             </div>
         </div>
@@ -639,7 +639,7 @@ def render_cart_drawer():
                     del st.session_state.cart[sku_id]
                 st.rerun()
         with q_col2:
-            st.markdown(f'<div style="text-align: center; font-weight: 800; font-size: 13px; font-family: \'Outfit\', sans-serif; margin-top: 4px;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: center; font-weight: 900; font-size: 15px; font-family: \'Outfit\', sans-serif; margin-top: 4px; color: #0f172a;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
         with q_col3:
             if st.button("+", key=f"drawer_inc_{sku_id}", use_container_width=True):
                 st.session_state.cart[sku_id]["qty"] += 1
@@ -654,8 +654,8 @@ def render_cart_drawer():
 
     if valid_recs:
         st.markdown(textwrap.dedent("""
-        <div style="margin-top: 14px; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">
-            <h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0;">People who bought this also bought this</h4>
+        <div style="margin-top: 16px; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+            <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0; letter-spacing: 0.3px;">People who bought this also bought this</h4>
         </div>
         """), unsafe_allow_html=True)
 
@@ -671,10 +671,10 @@ def render_cart_drawer():
             r_col1, r_col2 = st.columns([7, 3])
             with r_col1:
                 st.markdown(textwrap.dedent(f"""
-                <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif;">
-                    <span style="font-size: 9px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block;">{social_proof_text}</span>
-                    <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 4px 0 0 0;">{r["name"]}</p>
-                    <p style="font-size: 11px; font-weight: 800; color: #64748b; margin: 1px 0 0 0;">₹{r["price"]:.0f}</p>
+                <div style="background: white; border-radius: 12px; padding: 10px 12px; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif; margin-bottom: 4px;">
+                    <span style="font-size: 11px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 3px 8px; border-radius: 6px; display: inline-block; line-height: 1.3;">{social_proof_text}</span>
+                    <p style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 5px 0 0 0; line-height: 1.3;">{r["name"]}</p>
+                    <p style="font-size: 13px; font-weight: 900; color: #475569; margin: 2px 0 0 0;">₹{r["price"]:.0f}</p>
                 </div>
                 """), unsafe_allow_html=True)
             with r_col2:
@@ -684,13 +684,13 @@ def render_cart_drawer():
 
     # Bill details & Checkout Button
     st.markdown(textwrap.dedent(f"""
-    <div style="background: white; border-radius: 14px; padding: 12px; border: 1px solid #e2e8f0; margin-top: 14px; font-family: 'Outfit', sans-serif;">
-        <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">Bill details</h4>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Items total</span><span style="font-weight: 700;">₹{subtotal:.0f}</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Delivery charge</span><span style="font-weight: 700;">₹{delivery_charge:.0f}</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Handling charge</span><span style="font-weight: 700;">₹{handling_charge:.0f}</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Surge charge</span><span style="font-weight: 700;">₹{surge_charge:.0f}</span></div>
-        <div style="padding-top: 8px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; margin-top: 6px; font-weight: 900; font-size: 14px; color: #0f172a;"><span>Grand Total</span><span>₹{grand_total:.0f}</span></div>
+    <div style="background: white; border-radius: 16px; padding: 16px; border: 1px solid #e2e8f0; margin-top: 16px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+        <h4 style="font-size: 16px; font-weight: 900; color: #0f172a; margin: 0 0 12px 0;">Bill details</h4>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Items total</span><span style="font-weight: 800; color: #0f172a;">₹{subtotal:.0f}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Delivery charge</span><span style="font-weight: 800; color: #0f172a;">₹{delivery_charge:.0f}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Handling charge</span><span style="font-weight: 800; color: #0f172a;">₹{handling_charge:.0f}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Surge charge</span><span style="font-weight: 800; color: #0f172a;">₹{surge_charge:.0f}</span></div>
+        <div style="padding-top: 10px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; margin-top: 8px; font-weight: 900; font-size: 17px; color: #0f172a;"><span>Grand Total</span><span style="color: #0C831F;">₹{grand_total:.0f}</span></div>
     </div>
     """), unsafe_allow_html=True)
 
