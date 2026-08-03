@@ -776,24 +776,23 @@ else:
     page_container = st.container()
 
 with page_container:
-    # --- PRODUCT DISPLAY OVERLAY (PDP) ---
     if is_pdp_active:
         sku_id = st.session_state.selected_product
-    
-    # Ingest catalog details
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("SELECT name, price, category, base_rating, review_count FROM sku_catalog WHERE sku_id = ?", (sku_id,))
-    sku_row = cursor.fetchone()
-    conn.close()
-    
-    if sku_row:
-        name, price, category, base_rating, review_count = sku_row
-        image_url = get_product_image_url(sku_id, name)
+        
+        # Ingest catalog details
+        conn = sqlite3.connect(DB_PATH)
+        cursor = conn.cursor()
+        cursor.execute("SELECT name, price, category, base_rating, review_count FROM sku_catalog WHERE sku_id = ?", (sku_id,))
+        sku_row = cursor.fetchone()
+        conn.close()
+        
+        if sku_row:
+            name, price, category, base_rating, review_count = sku_row
+            image_url = get_product_image_url(sku_id, name)
 
-        if st.button("← Back to Products", key="close_pdp"):
-            st.session_state.selected_product = None
-            st.rerun()
+            if st.button("← Back to Products", key="close_pdp"):
+                st.session_state.selected_product = None
+                st.rerun()
 
         # Two-Column Grid for PDP: pdp_col1 (Image & Buy CTA) | pdp_col2 (Specs & Customer Reviews)
         pdp_col1, pdp_col2 = st.columns([5, 7])
