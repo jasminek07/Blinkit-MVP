@@ -1,0 +1,152 @@
+[
+  {
+    "review_id": "REV-001",
+    "sku_id": "SKU-CABLE",
+    "product_name": "USB Type-C Fast Charging Cable",
+    "category": "Electronics",
+    "rating": 5.0,
+    "review_text": "The cable is very fast and durable. Highly recommend for quick charge. Got it delivered in 10 mins! Phone number: 9910283746.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-06-15T12:00:00Z"
+  },
+  {
+    "review_id": "REV-002",
+    "sku_id": "SKU-CABLE",
+    "product_name": "USB Type-C Fast Charging Cable",
+    "category": "Electronics",
+    "rating": 5.0,
+    "review_text": "Got it delivered in 10 mins! Highly recommend for quick charge. The cable is very fast and durable.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-06-15T12:05:00Z"
+  },
+  {
+    "review_id": "REV-003",
+    "sku_id": "SKU-CABLE",
+    "product_name": "USB Type-C Fast Charging Cable",
+    "category": "Electronics",
+    "rating": 1.0,
+    "review_text": "working bilkul bakwaas hai, within 2 days connection loose ho gaya. Quality is extremely cheap.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-06-20T14:30:00Z"
+  },
+  {
+    "review_id": "REV-004",
+    "sku_id": "SKU-CABLE",
+    "product_name": "USB Type-C Fast Charging Cable",
+    "category": "Electronics",
+    "rating": 4.5,
+    "review_text": "Charges my phone very quickly. Build quality is robust. Value for money under 200 rs. Home address: House 420, Sector 24, DLF Phase 3.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-06-22T09:15:00Z"
+  },
+  {
+    "review_id": "REV-005",
+    "sku_id": "SKU-CABLE",
+    "product_name": "USB Type-C Fast Charging Cable",
+    "category": "Electronics",
+    "rating": 4.5,
+    "review_text": "Charges my phone very quickly. Build quality is robust. Value for money under 200 rs. Home address: House 420, Sector 24, DLF Phase 3.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-06-22T09:16:00Z"
+  },
+  {
+    "review_id": "REV-006",
+    "sku_id": "SKU-SUNSCREEN",
+    "product_name": "Neutrogena Sunscreen SPF 50 Mini",
+    "category": "Beauty/Skincare",
+    "rating": 5.0,
+    "review_text": "Perfect sunscreen for summers. Absorbs in seconds and doesn't feel sticky at all. My email is user123@gmail.com.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-01T10:00:00Z"
+  },
+  {
+    "review_id": "REV-007",
+    "sku_id": "SKU-SUNSCREEN",
+    "product_name": "Neutrogena Sunscreen SPF 50 Mini",
+    "category": "Beauty/Skincare",
+    "rating": 5.0,
+    "review_text": "Highly recommended for daily commute under the hot Gurgaon sun. It leaves no white cast and absorbs quickly.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-02T11:00:00Z"
+  },
+  {
+    "review_id": "REV-008",
+    "sku_id": "SKU-SUNSCREEN",
+    "product_name": "Neutrogena Sunscreen SPF 50 Mini",
+    "category": "Beauty/Skincare",
+    "rating": 5.0,
+    "review_text": "Highly recommended for daily commute under the hot Gurgaon sun. It leaves no white cast and absorbs quickly.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-02T11:05:00Z"
+  },
+  {
+    "review_id": "REV-009",
+    "sku_id": "SKU-SUNSCREEN",
+    "product_name": "Neutrogena Sunscreen SPF 50 Mini",
+    "category": "Beauty/Skincare",
+    "rating": 4.5,
+    "review_text": "bahut badhiya sunscreen hai. Skin pe chipchipa nahi lagta and provides good protection. Recommend this to all my friends.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-05T15:20:00Z"
+  },
+  {
+    "review_id": "REV-010",
+    "sku_id": "SKU-SUNSCREEN",
+    "product_name": "Neutrogena Sunscreen SPF 50 Mini",
+    "category": "Beauty/Skincare",
+    "rating": 2.0,
+    "review_text": "Waste of money, gave me rashes. Do not buy this product.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-10T18:40:00Z"
+  },
+  {
+    "review_id": "REV-011",
+    "sku_id": "SKU-SCRUNCHIE",
+    "product_name": "Silk Hair Scrunchies Pack of 3",
+    "category": "Clothing",
+    "rating": 5.0,
+    "review_text": "Super soft fabric and holds hair tightly without damage. Colors are cute too.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-12T13:10:00Z"
+  },
+  {
+    "review_id": "REV-012",
+    "sku_id": "SKU-SCRUNCHIE",
+    "product_name": "Silk Hair Scrunchies Pack of 3",
+    "category": "Clothing",
+    "rating": 5.0,
+    "review_text": "Colors are cute too. Super soft fabric and holds hair tightly without damage.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-12T13:15:00Z"
+  },
+  {
+    "review_id": "REV-013",
+    "sku_id": "SKU-SCRUNCHIE",
+    "product_name": "Silk Hair Scrunchies Pack of 3",
+    "category": "Clothing",
+    "rating": 4.5,
+    "review_text": "kapda bahut achha hai, soft feel and looks premium. Value for money.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-15T16:00:00Z"
+  },
+  {
+    "review_id": "REV-014",
+    "sku_id": "SKU-SOCKS",
+    "product_name": "Ankle Cotton Socks Pack of 2",
+    "category": "Clothing",
+    "rating": 4.5,
+    "review_text": "Very comfortable for daily wear. Pure cotton, keeps feet dry and fits perfectly.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-18T14:00:00Z"
+  },
+  {
+    "review_id": "REV-015",
+    "sku_id": "SKU-SOCKS",
+    "product_name": "Ankle Cotton Socks Pack of 2",
+    "category": "Clothing",
+    "rating": 4.5,
+    "review_text": "Very comfortable for daily wear. Pure cotton, keeps feet dry and fits perfectly.",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-18T14:02:00Z"
+  }
+]

@@ -1,0 +1,94 @@
+[
+  {
+    "transaction_id": "TXN-001",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-20T08:30:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-COFFEE", "name": "Premium Coffee Beans", "price": 450, "category": "Grocery" },
+      { "sku_id": "SKU-CABLE", "name": "USB Type-C Fast Charging Cable", "price": 150, "category": "Electronics" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-002",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-20T09:15:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-WASH", "name": "Foaming Face Wash", "price": 299, "category": "Grocery" },
+      { "sku_id": "SKU-SUNSCREEN", "name": "Neutrogena Sunscreen SPF 50 Mini", "price": 185, "category": "Beauty/Skincare" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-003",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-20T10:00:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-WASH", "name": "Foaming Face Wash", "price": 299, "category": "Grocery" },
+      { "sku_id": "SKU-SUNSCREEN", "name": "Neutrogena Sunscreen SPF 50 Mini", "price": 185, "category": "Beauty/Skincare" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-004",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-20T11:45:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-COFFEE", "name": "Premium Coffee Beans", "price": 450, "category": "Grocery" },
+      { "sku_id": "SKU-CABLE", "name": "USB Type-C Fast Charging Cable", "price": 150, "category": "Electronics" },
+      { "sku_id": "SKU-STAPLE-MILK", "name": "Organic Whole Milk 1L", "price": 75, "category": "Grocery" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-005",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-21T14:10:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-COFFEE", "name": "Premium Coffee Beans", "price": 450, "category": "Grocery" },
+      { "sku_id": "SKU-SCRUNCHIE", "name": "Silk Hair Scrunchies Pack of 3", "price": 99, "category": "Clothing" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-006",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-21T15:30:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-WASH", "name": "Foaming Face Wash", "price": 299, "category": "Grocery" },
+      { "sku_id": "SKU-SCRUNCHIE", "name": "Silk Hair Scrunchies Pack of 3", "price": 99, "category": "Clothing" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-007",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-22T08:00:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-MILK", "name": "Organic Whole Milk 1L", "price": 75, "category": "Grocery" },
+      { "sku_id": "SKU-STAPLE-BREAD", "name": "Whole Wheat Bread 400g", "price": 50, "category": "Grocery" },
+      { "sku_id": "SKU-SOCKS", "name": "Ankle Cotton Socks Pack of 2", "price": 120, "category": "Clothing" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-008",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-22T09:30:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-COFFEE", "name": "Premium Coffee Beans", "price": 450, "category": "Grocery" },
+      { "sku_id": "SKU-SOCKS", "name": "Ankle Cotton Socks Pack of 2", "price": 120, "category": "Clothing" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-009",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-22T10:45:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-WASH", "name": "Foaming Face Wash", "price": 299, "category": "Grocery" },
+      { "sku_id": "SKU-SOCKS", "name": "Ankle Cotton Socks Pack of 2", "price": 120, "category": "Clothing" }
+    ]
+  },
+  {
+    "transaction_id": "TXN-010",
+    "location": "DLF Phase 3, Gurugram",
+    "timestamp": "2026-07-23T16:20:00Z",
+    "items": [
+      { "sku_id": "SKU-STAPLE-COFFEE", "name": "Premium Coffee Beans", "price": 450, "category": "Grocery" },
+      { "sku_id": "SKU-SUNSCREEN", "name": "Neutrogena Sunscreen SPF 50 Mini", "price": 185, "category": "Beauty/Skincare" }
+    ]
+  }
+]

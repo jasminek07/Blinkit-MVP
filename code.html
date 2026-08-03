@@ -1,0 +1,433 @@
+<!DOCTYPE html><html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SwiftDash - Quick Commerce Desktop</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1f1b11",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed": "#00210d",
+                        "primary": "#725c00",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#f0e7d6",
+                        "on-primary-fixed": "#231b00",
+                        "outline-variant": "#d0c6ac",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "surface": "#fff8f0",
+                        "secondary-container": "#74f9a0",
+                        "on-secondary-container": "#00723a",
+                        "primary-container": "#fad02c",
+                        "surface-container-low": "#fcf3e2",
+                        "inverse-on-surface": "#f9f0df",
+                        "on-surface": "#1f1b11",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#e4e2e4",
+                        "inverse-surface": "#343025",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#564500",
+                        "surface-tint": "#725c00",
+                        "primary-fixed": "#ffe07d",
+                        "surface-container-highest": "#eae2d1",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#59df89",
+                        "tertiary": "#5f5e60",
+                        "surface-container": "#f6eddc",
+                        "on-tertiary-container": "#5c5b5d",
+                        "inverse-primary": "#ebc31a",
+                        "outline": "#7f7660",
+                        "primary-fixed-dim": "#ebc31a",
+                        "on-surface-variant": "#4d4633",
+                        "background": "#fff8f0",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "on-primary-container": "#6e5900",
+                        "surface-bright": "#fff8f0",
+                        "surface-variant": "#eae2d1",
+                        "on-secondary-fixed-variant": "#005228",
+                        "secondary-fixed": "#77fca3",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#d6d3d6",
+                        "surface-dim": "#e1d9c9",
+                        "secondary": "#006d38"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "40px",
+                        "card-padding": "24px",
+                        "stack-lg": "48px",
+                        "stack-sm": "12px",
+                        "gutter": "20px",
+                        "stack-md": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "headline-md": ["Outfit"],
+                        "price-display": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "headline-lg-mobile": ["Outfit"],
+                        "headline-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-bold": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                        "display-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "700"}],
+                        "price-display": ["20px", {"lineHeight": "28px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "700"}],
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #fff8f0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 248, 240, 0.85);
+            border-bottom: 1px solid rgba(127, 118, 96, 0.1);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .sticky-checkout {
+            position: sticky;
+            top: 120px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Desktop Header -->
+<header class="fixed top-0 left-0 w-full z-[100] glass-header px-container-margin py-4">
+<div class="max-w-[1440px] mx-auto flex items-center justify-between gap-8">
+<!-- Brand & Location -->
+<div class="flex items-center gap-8 shrink-0">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-black tracking-tighter text-on-surface">Blinkit</h1>
+<div class="hidden lg:block border-l border-outline-variant h-8 mx-2"></div>
+<button class="flex items-center gap-1 text-on-surface-variant font-label-bold text-label-bold group">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<div class="text-left">
+<p class="text-[10px] uppercase text-outline leading-none">Delivering to</p>
+<span class="text-on-surface block">DLF Phase 3</span>
+</div>
+<span class="material-symbols-outlined text-sm group-hover:translate-y-0.5 transition-transform ml-1">keyboard_arrow_down</span>
+</button>
+</div>
+<!-- Prominent Search Bar -->
+<div class="relative flex-1 max-w-2xl group">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full h-12 pl-12 pr-4 rounded-xl border-none bg-surface-container-high focus:ring-2 focus:ring-secondary transition-all font-body-md text-body-md text-on-surface-variant shadow-inner" placeholder="Search &quot;sunscreen&quot;, &quot;basmati rice&quot; or &quot;organic fruits&quot;" type="text">
+</div>
+<!-- Desktop Actions -->
+<div class="flex items-center gap-6 shrink-0">
+<a class="flex flex-col items-center text-on-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-[11px] font-label-bold uppercase">Account</span>
+</a>
+<a class="flex flex-col items-center text-on-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="text-[11px] font-label-bold uppercase">Orders</span>
+</a>
+<!-- Cart Desktop Integration -->
+<button class="bg-secondary text-on-secondary px-6 py-3 rounded-xl shadow-lg flex items-center gap-3 transform transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined">shopping_cart</span>
+<div class="text-left border-l border-on-secondary/20 pl-3">
+<span class="font-label-bold block text-[10px] opacity-80 leading-none">1 ITEM</span>
+<span class="font-headline-md text-base">₹240</span>
+</div>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Layout -->
+<main class="mt-32 max-w-[1440px] mx-auto px-container-margin pb-20">
+<div class="flex flex-col lg:flex-row gap-10">
+<!-- Left Side: Main Content -->
+<div class="flex-1 space-y-stack-lg">
+<!-- Category Grid (Desktop) -->
+<section>
+<div class="flex gap-8 overflow-x-auto pb-4 no-scrollbar">
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-secondary-container flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl" style="font-variation-settings: 'FILL' 1;">shopping_basket</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface">All Products</span>
+</div>
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">grocery</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface text-center">Grocery</span>
+</div>
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">bolt</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface">Electric</span>
+</div>
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">face</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface">Beauty</span>
+</div>
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">apparel</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface">Clothing</span>
+</div>
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">pets</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface">Pet Care</span>
+</div>
+<div class="flex flex-col items-center gap-3 shrink-0 cursor-pointer group">
+<div class="w-20 h-20 rounded-2xl bg-surface-container-highest flex items-center justify-center transition-all group-hover:scale-105 group-hover:shadow-md">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">medication</span>
+</div>
+<span class="font-label-bold text-sm text-on-surface">Pharma</span>
+</div>
+</div>
+</section>
+<!-- Promo Grid (Desktop 4-column) -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-gutter">
+<div class="h-56 rounded-2xl bg-[#FDFAE6] p-card-padding flex flex-col justify-between transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer border border-outline-variant/20">
+<span class="font-headline-md text-headline-md leading-tight text-[#725c00]">Idols &amp; Pooja Needs</span>
+<div class="h-24 w-full flex justify-end items-end">
+<img class="h-24 w-24 object-contain" data-alt="Small brass idol of Ganesha" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAea1giejbX5RFFtoT7CgqqHZAa1TZCWBI4G_HRFdwvDxz0kDrRhHTAsttrjBHpzdYdHBfpXRSD00kh8WflZyE6erW1BV-JYFfGMkzrs8IdTo9PNqKTdNCxLgwQED7WvDtPOgWF-3XLEeXXi2vfTel-K-aMHAYYa6T03EBOx1wW-g945nGnGQGhF_vKnef1J5P3nmIplm1ongSDvij_hOk24G0VW5DzaK_Bo01i_1xqKDi4ZCZ6XoWm">
+</div>
+</div>
+<div class="h-56 rounded-2xl bg-[#FFF0F6] p-card-padding flex flex-col justify-between transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer border border-outline-variant/20">
+<span class="font-headline-md text-headline-md leading-tight text-[#B01B5E]">Modaks &amp; Sweets</span>
+<div class="h-24 w-full flex justify-end items-end">
+<img class="h-24 w-24 object-contain" data-alt="Plate of fresh modaks" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKmJbpX93XHzSdnS1JFgYyz5C6wPADWYYBSrp9kT26Aig93_lf5pHY-KG0eh8HvC2obVQPREOotBa7EUpENTMrq5uJROEgwYvb5YFnb_LV0JkL18kdua3a4IoJGTHGmRtUl-ojoPi0m2axTNEP2Km_shXGrke8UkZXzCazO-6-piu9CsVyk4b20rTEXDamKFDaJEn9v-eYW7obU7QiFzFdGt0QlFzPBKSAzChhBo2oQudpL5Hmh1Mx">
+</div>
+</div>
+<div class="h-56 rounded-2xl bg-[#F4FBF7] p-card-padding flex flex-col justify-between transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer border border-outline-variant/20">
+<span class="font-headline-md text-headline-md leading-tight text-[#006d38]">Home Decor</span>
+<div class="h-24 w-full flex justify-end items-end">
+<img class="h-24 w-24 object-contain" data-alt="Minimalist home decor" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1RkeIvxsfnwliwvVuUyP8yQWs7nBj3CgZlgMejXn4bzE3QvkaG_7Fuq-6vv16C86ixA2zNMN_7J4DLQy0saQAuRDOp3E_oPVAW8FAgaGghD0-ZRx2XVaomoPf7w6ELPr_-C3nKmws51Jl6tMps61ZjG-a-ASbov3CDQqqIejh8XdCjuykg3Ru1ZAEDiRJOTX5zqilxH2fmVWSHUliHoy9MOWBZpJVyz12If9J2ZNT8bS5BxCo__1S">
+</div>
+</div>
+<div class="h-56 rounded-2xl bg-[#E8F4FD] p-card-padding flex flex-col justify-between transition-all hover:-translate-y-2 hover:shadow-xl cursor-pointer border border-outline-variant/20">
+<span class="font-headline-md text-headline-md leading-tight text-[#0056D2]">Local Skincare</span>
+<div class="h-24 w-full flex justify-end items-end">
+<img class="h-24 w-24 object-contain" data-alt="Luxury skincare arrangement" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMuXhlY-r3WZBzjPM3LRV65zTet8cTBJaGcfDeQX7q7CHKVkz_ZYgO0J8_bkhKu1wf9vQaHjPXOZMIEYZbpzPgnuzJZWrDrZFBw1wETD0-2qVuFsDuBaRUmKGOyji4pon2FsOyE1x_GeFyu0tY7np3KceISbjj0HmFppJ6vEgNvruz9Sa5hjedalFCRUytrTOwVnP5lqT-LOigxKvcw1kyCzhOtd0Q0rw1GQxB_ejzSLrwDHsnAyLB">
+</div>
+</div>
+</section>
+<!-- Staples Section (Desktop Grid) -->
+<section class="space-y-stack-md">
+<div class="flex justify-between items-end border-b border-outline-variant/20 pb-4">
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-surface">Frequently Bought Staples</h2>
+<p class="text-on-surface-variant font-body-md mt-1">Based on your recent shopping history</p>
+</div>
+<button class="text-secondary font-label-bold text-label-bold hover:underline">View Full Catalog</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-gutter">
+<!-- Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 p-6 rounded-2xl group transition-all hover:shadow-lg hover:border-secondary/30 relative overflow-hidden">
+<div class="flex flex-col gap-4">
+<div class="w-full aspect-square bg-surface-container rounded-xl overflow-hidden mb-2">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Premium Basmati Rice" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAakPAtkv6jn0y6IIL6iovdJk99pMLx4qji7fBWtL_quaoJ8ElyL9Bg6A93gYvksT1p9t7iykuiM-LlZ-ilDV25P0AOIcMd_LQ6vomoUnZntVAWL77R8ylzC8QPQQNFOpIQk244jodDNQ2xeHP6kf6YSYQASRwPoj918UqR99kpjYoLO81GGeiuNtnX-98a-oz6avWoBD6-YXcN0hVICZUy1gUmElQa-hmXA5DvoTj3-oNtwKbtHfrX">
+</div>
+<div class="space-y-1">
+<p class="font-body-lg text-body-lg font-bold text-on-surface leading-tight">Premium Basmati Rice</p>
+<p class="font-body-md text-body-md text-on-surface-variant">1 kg pack • 8 mins</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/10">
+<p class="font-price-display text-price-display text-on-surface">₹450</p>
+<button class="bg-secondary text-on-secondary px-8 py-2.5 rounded-xl font-label-bold text-label-bold transition-all active:scale-95 hover:brightness-110 shadow-sm">ADD</button>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 p-6 rounded-2xl group transition-all hover:shadow-lg hover:border-secondary/30 relative overflow-hidden">
+<div class="flex flex-col gap-4">
+<div class="w-full aspect-square bg-surface-container rounded-xl overflow-hidden mb-2">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Sunflower Oil" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9yHewtaywyRuvzqO9vz2bNOICVcSi8noeKcfWzIWh6Wfdy3uZ_1eEorj14NYMS7Q9DU6S22_MNnL1NdMsD9q0c2y403TZ957Nsk2GEIU5Utfm5xnQSbCyBoVZgdfXiFprtRjeYwecGN8AK5jN2I7nmK34CIGLlbn7njzoytCQyTEBYeDzErNf5ptA597gbIMIoTo0D5HfCv3ISs3TaY9UBeunnDgqSAmJZ1sXjRqi9MNQPqoyy_7p">
+</div>
+<div class="space-y-1">
+<p class="font-body-lg text-body-lg font-bold text-on-surface leading-tight">Sunflower Oil</p>
+<p class="font-body-md text-body-md text-on-surface-variant">1 Litre • 7 mins</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/10">
+<p class="font-price-display text-price-display text-on-surface">₹180</p>
+<button class="bg-secondary text-on-secondary px-8 py-2.5 rounded-xl font-label-bold text-label-bold transition-all active:scale-95 hover:brightness-110 shadow-sm">ADD</button>
+</div>
+</div>
+</div>
+<!-- Item 3 (Added for desktop balance) -->
+<div class="bg-surface-container-lowest border border-outline-variant/20 p-6 rounded-2xl group transition-all hover:shadow-lg hover:border-secondary/30 relative overflow-hidden">
+<div class="flex flex-col gap-4">
+<div class="w-full aspect-square bg-surface-container rounded-xl overflow-hidden mb-2 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-6xl opacity-20">inventory_2</span>
+</div>
+<div class="space-y-1">
+<p class="font-body-lg text-body-lg font-bold text-on-surface leading-tight">Organic Whole Wheat</p>
+<p class="font-body-md text-body-md text-on-surface-variant">5 kg • 12 mins</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/10">
+<p class="font-price-display text-price-display text-on-surface">₹325</p>
+<button class="bg-secondary text-on-secondary px-8 py-2.5 rounded-xl font-label-bold text-label-bold transition-all active:scale-95 hover:brightness-110 shadow-sm">ADD</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Side: Sticky Checkout / Social (Desktop Sidebar) -->
+<aside class="w-full lg:w-[400px] shrink-0">
+<div class="sticky-checkout space-y-gutter">
+<!-- Delivery & Social Proof -->
+<div class="bg-primary-container p-6 rounded-2xl space-y-4 border border-primary/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-on-primary-container/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-2xl" style="font-variation-settings: 'FILL' 1;">electric_bolt</span>
+</div>
+<p class="font-label-bold text-base text-on-primary-container uppercase tracking-widest">Flash Delivery</p>
+</div>
+<p class="font-body-lg text-on-primary-container leading-relaxed">
+                            ⚡ <span class="font-bold">180+ neighbors</span> in your area ordered in the last hour.
+                        </p>
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full bg-surface-container border-2 border-primary-container"></div>
+<div class="w-8 h-8 rounded-full bg-surface-dim border-2 border-primary-container"></div>
+<div class="w-8 h-8 rounded-full bg-secondary-container border-2 border-primary-container"></div>
+<div class="pl-4 flex items-center text-on-primary-container/70 text-xs font-bold uppercase">Trending Now</div>
+</div>
+</div>
+<!-- Cart Summary Drawer -->
+<div class="bg-surface-container-high p-8 rounded-2xl border border-outline-variant/30 space-y-6 shadow-sm">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-4">
+<h3 class="font-headline-md text-on-surface">Order Summary</h3>
+<span class="bg-secondary/10 text-secondary px-2 py-1 rounded text-xs font-bold">1 ITEM</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-on-surface-variant font-body-md">
+<span class="">Subtotal</span>
+<span class="">₹240</span>
+</div>
+<div class="flex justify-between text-on-surface-variant font-body-md">
+<span class="">Delivery Fee</span>
+<span class="text-secondary font-bold">FREE</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20 flex justify-between items-center">
+<span class="font-headline-md text-on-surface text-lg">Total Amount</span>
+<span class="font-headline-md text-secondary text-2xl">₹240</span>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center">
+<p class="font-label-bold text-xs text-on-surface uppercase tracking-wider">Delivery Progress</p>
+<span class="font-label-bold text-xs text-secondary">₹160 more for free delivery</span>
+</div>
+<div class="w-full h-3 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[100%] rounded-full transition-all duration-1000"></div>
+</div>
+<div class="flex items-center gap-2 text-secondary bg-secondary/5 p-2 rounded-lg">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+<span class="font-body-md text-xs font-bold">🎉 Unlocked FREE Delivery!</span>
+</div>
+</div>
+<button class="w-full bg-secondary hover:bg-[#005228] text-on-secondary py-5 px-6 rounded-2xl flex justify-between items-center transition-all shadow-lg hover:shadow-xl active:scale-[0.98]">
+<span class="font-headline-md text-lg">Place Order 🚀</span>
+<span class="material-symbols-outlined text-2xl">chevron_right</span>
+</button>
+<p class="text-center text-[10px] text-on-surface-variant font-medium">Safe &amp; Secure Payments • Instant Cancellation</p>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer Content -->
+<footer class="bg-surface-container px-container-margin py-16 border-t border-outline-variant/20">
+<div class="max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="space-y-4">
+<h2 class="font-headline-lg-mobile font-black tracking-tighter text-on-surface">Blinkit</h2>
+<p class="text-on-surface-variant font-body-md">Delivering freshness to your doorstep in under 10 minutes. Rani Sati Nagar's favorite quick commerce partner.</p>
+</div>
+<div class="space-y-4">
+<p class="font-label-bold text-on-surface uppercase tracking-widest">Categories</p>
+<ul class="space-y-2 text-on-surface-variant font-body-md">
+<li class=""><a class="hover:text-secondary" href="#">Groceries &amp; Staples</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Fruits &amp; Vegetables</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Personal Care</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Home &amp; Kitchen</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<p class="font-label-bold text-on-surface uppercase tracking-widest">Customer Support</p>
+<ul class="space-y-2 text-on-surface-variant font-body-md">
+<li class=""><a class="hover:text-secondary" href="#">Order Tracking</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Help Center</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Refund Policy</a></li>
+<li class=""><a class="hover:text-secondary" href="#">Contact Us</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<p class="font-label-bold text-on-surface uppercase tracking-widest">Download App</p>
+<div class="flex gap-4">
+<div class="w-32 h-10 bg-black rounded-lg flex items-center justify-center text-white cursor-pointer hover:opacity-80">App Store</div>
+<div class="w-32 h-10 bg-black rounded-lg flex items-center justify-center text-white cursor-pointer hover:opacity-80">Play Store</div>
+</div>
+</div>
+</div>
+<div class="max-w-[1440px] mx-auto mt-16 pt-8 border-t border-outline-variant/10 text-center text-on-surface-variant text-xs">© 2024 Blinkit Commerce. All rights reserved.</div>
+</footer>
+<script>
+        // Sticky header transition on scroll
+        const header = document.querySelector('.glass-header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.add('py-3');
+                header.classList.remove('py-4');
+            } else {
+                header.classList.remove('shadow-md');
+                header.classList.add('py-4');
+                header.classList.remove('py-3');
+            }
+        });
+
+        // Add to cart micro-interaction
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (window.navigator.vibrate) {
+                    window.navigator.vibrate(5);
+                }
+            });
+        });
+    </script>
+
+
+</body></html>
