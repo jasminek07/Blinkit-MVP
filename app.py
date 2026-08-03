@@ -984,14 +984,14 @@ else:
                         ),
                         unsafe_allow_html=True,
                     )
-                    bc1, bc2 = st.columns(2)
+                    bc1, bc2 = st.columns([7, 3])
                     with bc1:
-                        if st.button("Details 👁️", key=f"srch_det_{sku_id}"):
+                        if st.button(f"🔎 {name}", key=f"srch_pdp_{sku_id}", use_container_width=True):
                             st.session_state.selected_product = sku_id
                             st.session_state.show_cart = False
                             st.rerun()
                     with bc2:
-                        if st.button("+ ADD 🛒", key=f"srch_add_{sku_id}"):
+                        if st.button("+ ADD", key=f"srch_add_{sku_id}", use_container_width=True):
                             add_to_cart(sku_id, name, price, category)
                             st.rerun()
         else:
@@ -1074,14 +1074,14 @@ else:
                     ),
                     unsafe_allow_html=True,
                 )
-                bc1, bc2 = st.columns(2)
+                bc1, bc2 = st.columns([7, 3])
                 with bc1:
-                    if st.button("Details 👁️", key=f"stp_det_{s['sku_id']}"):
+                    if st.button(f"🔎 {s['name']}", key=f"stp_pdp_{s['sku_id']}", use_container_width=True):
                         st.session_state.selected_product = s["sku_id"]
                         st.session_state.show_cart = False
                         st.rerun()
                 with bc2:
-                    if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}"):
+                    if st.button("+ ADD", key=f"stp_add_{s['sku_id']}", use_container_width=True):
                         add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
                         st.rerun()
 
