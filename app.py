@@ -646,8 +646,8 @@ def render_cart_drawer():
     distances = ["0.5km", "0.8km", "1km", "1.2km", "1.5km"]
 
     recs_html = ""
+    rec_cards = []
     if valid_recs:
-        rec_cards = []
         for idx, r in enumerate(valid_recs[:2]):
             r_img = get_product_image_url(r["sku_id"], r["name"])
             person_name = indian_names[idx % len(indian_names)]
@@ -655,8 +655,7 @@ def render_cart_drawer():
             social_proof_text = f"⚡ {person_name} from {dist} distance also ordered {r['name']} when ordering {first_item_name}"
 
             rc = (
-                f'<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f8fafc; gap: 8px;">'
-                f'<div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">'
+                f'<div style="display: flex; align-items: center; gap: 10px; overflow: hidden; padding: 6px 0;">'
                 f'<div style="width: 42px; height: 42px; min-width: 42px; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: white; padding: 3px; flex-shrink: 0;">'
                 f'<img src="{r_img}" alt="{r["name"]}" style="width: 100%; height: 100%; object-fit: contain; display: block;">'
                 f'</div>'
@@ -666,16 +665,8 @@ def render_cart_drawer():
                 f'<p style="font-size: 11px; font-weight: 700; color: #64748b; margin: 1px 0 0 0;">₹{r["price"]:.0f}</p>'
                 f'</div>'
                 f'</div>'
-                f'<a href="?action=add&sku={r["sku_id"]}" target="_self" style="background: white; border: 1.5px solid #0C831F; color: #0C831F; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-decoration: none; flex-shrink: 0;">+ ADD</a>'
-                f'</div>'
             )
-            rec_cards.append(rc)
-        recs_html = (
-            f'<div style="background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">'
-            f'<h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0 0 10px 0;">People who bought this also bought this</h4>'
-            f'{"".join(rec_cards)}'
-            f'</div>'
-        )
+            rec_cards.append((rc, r))
 
     # Single-line Drawer Overlay HTML
     drawer_html = (
@@ -699,7 +690,6 @@ def render_cart_drawer():
         f'</div>'
         f'{items_html}'
         f'</div>'
-        f'{recs_html}'
         f'<div style="background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">'
         f'<h4 style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 0 0 10px 0;">Bill details</h4>'
         f'<div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #475569; font-weight: 500;">'
@@ -722,6 +712,22 @@ def render_cart_drawer():
         f'</div>'
     )
     st.markdown(drawer_html, unsafe_allow_html=True)
+
+    if rec_cards:
+        st.markdown(textwrap.dedent("""
+        <div style="background: white; border-radius: 16px; padding: 12px 16px; border: 1px solid #f1f5f9; margin-top: 10px; font-family: 'Outfit', sans-serif;">
+            <h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0 0 8px 0;">People who bought this also bought this</h4>
+        </div>
+        """), unsafe_allow_html=True)
+
+        for idx, (rc_html, r_item) in enumerate(rec_cards):
+            r_col1, r_col2 = st.columns([7, 3])
+            with r_col1:
+                st.markdown(rc_html, unsafe_allow_html=True)
+            with r_col2:
+                if st.button("+ ADD", key=f"rec_add_btn_{r_item['sku_id']}_{idx}", use_container_width=True):
+                    add_to_cart(r_item["sku_id"], r_item["name"], r_item["price"], r_item["category"])
+                    st.rerun()
 
 
 
