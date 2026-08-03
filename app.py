@@ -576,153 +576,130 @@ def render_cart_drawer():
     if not st.session_state.show_cart:
         return
 
-    # If cart is empty, render clean Empty Cart Overlay Drawer
-    if not st.session_state.cart:
-        empty_drawer_html = (
-            f'<a href="?action=close_cart" target="_self" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); z-index: 999990; text-decoration: none; cursor: default;"></a>'
-            f'<div style="position: fixed; top: 0; right: 0; width: 390px; max-width: 90vw; height: 100vh; background: #ffffff; z-index: 999999; box-shadow: -6px 0 30px rgba(0,0,0,0.2); overflow-y: auto; display: flex; flex-direction: column; font-family: \'Outfit\', sans-serif;">'
-            f'<div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: white; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 20;">'
-            f'<div style="display: flex; align-items: center; gap: 10px;">'
-            f'<a href="?action=close_cart" target="_self" style="color: #0f172a; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center;">←</a>'
-            f'<span style="font-size: 16px; font-weight: 800; color: #0f172a;">My Cart</span>'
-            f'</div>'
-            f'<a href="?action=close_cart" target="_self" style="color: #64748b; text-decoration: none; font-size: 14px; font-weight: 800;">✕</a>'
-            f'</div>'
-            f'<div style="padding: 40px 24px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; flex: 1;">'
-            f'<div style="width: 80px; height: 80px; border-radius: 50%; background: #ecfdf5; color: #0C831F; display: flex; align-items: center; justify-content: center; font-size: 36px; margin-bottom: 16px;">🛒</div>'
-            f'<h3 style="font-size: 18px; font-weight: 900; color: #0f172a; margin: 0 0 6px 0;">Your cart is empty</h3>'
-            f'<p style="font-size: 13px; color: #64748b; margin: 0 0 24px 0; line-height: 1.4;">Explore fresh products and add items to unlock hyper-local 10-minute delivery in DLF Phase 3!</p>'
-            f'<a href="?action=close_cart" target="_self" style="background: #0C831F; color: white; padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 800; text-decoration: none; box-shadow: 0 4px 12px rgba(12,131,31,0.25);">Start Shopping</a>'
-            f'</div>'
-            f'</div>'
-        )
-        st.markdown(empty_drawer_html, unsafe_allow_html=True)
-        return
+    with st.sidebar:
+        # Header Row
+        h_col1, h_col2 = st.columns([7, 3])
+        with h_col1:
+            st.markdown('<h3 style="font-family: \'Outfit\', sans-serif; font-size: 18px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>', unsafe_allow_html=True)
+        with h_col2:
+            if st.button("✕ Close", key="sidebar_close_cart_btn", use_container_width=True):
+                st.session_state.show_cart = False
+                st.rerun()
 
-    total_items = get_cart_count()
-    subtotal = get_cart_subtotal()
-    delivery_charge = 25.0
-    handling_charge = 2.0
-    surge_charge = 30.0
-    grand_total = subtotal + delivery_charge + handling_charge + surge_charge
+        # If cart is empty
+        if not st.session_state.cart:
+            st.markdown(textwrap.dedent("""
+            <div style="padding: 40px 10px; text-align: center; font-family: 'Outfit', sans-serif;">
+                <div style="font-size: 40px; margin-bottom: 10px;">🛒</div>
+                <h4 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0;">Your cart is empty</h4>
+                <p style="font-size: 12px; color: #64748b; margin: 0;">Explore fresh products and add items to unlock 10-minute delivery in DLF Phase 3!</p>
+            </div>
+            """), unsafe_allow_html=True)
+            return
 
-    # Cart Items HTML (Single-line strings)
-    items_html_list = []
-    for sku_id, item in st.session_state.cart.items():
-        img = get_product_image_url(sku_id, item["name"])
-        card = (
-            f'<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f1f5f9; gap: 12px;">'
-            f'<div style="display: flex; align-items: center; gap: 12px; overflow: hidden;">'
-            f'<div style="width: 50px; height: 50px; min-width: 50px; border: 1px solid #e2e8f0; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: white; padding: 4px; flex-shrink: 0;">'
-            f'<img src="{img}" alt="{item["name"]}" style="width: 100%; height: 100%; object-fit: contain; display: block;">'
-            f'</div>'
-            f'<div>'
-            f'<p style="font-size: 13px; font-weight: 700; color: #0f172a; margin: 0; line-height: 1.3;">{item["name"]}</p>'
-            f'<p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0; font-weight: 500;">350 g</p>'
-            f'<p style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 2px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>'
-            f'</div>'
-            f'</div>'
-            f'<div style="background-color: #0C831F; color: white; border-radius: 8px; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: space-between; padding: 4px 10px; width: 75px; flex-shrink: 0; box-shadow: 0 1px 3px rgba(12,131,31,0.2);">'
-            f'<a href="?action=dec&sku={sku_id}" target="_self" style="color: white; text-decoration: none; font-size: 16px; font-weight: 900;">−</a>'
-            f'<span>{item["qty"]}</span>'
-            f'<a href="?action=inc&sku={sku_id}" target="_self" style="color: white; text-decoration: none; font-size: 16px; font-weight: 900;">+</a>'
-            f'</div>'
-            f'</div>'
-        )
-        items_html_list.append(card)
-    items_html = "".join(items_html_list)
+        total_items = get_cart_count()
+        subtotal = get_cart_subtotal()
+        delivery_charge = 25.0
+        handling_charge = 2.0
+        surge_charge = 30.0
+        grand_total = subtotal + delivery_charge + handling_charge + surge_charge
 
-    # Recommendations HTML
-    cart_skus = list(st.session_state.cart.keys())
-    cart_items_list = list(st.session_state.cart.values())
-    first_item_name = cart_items_list[0]["name"] if cart_items_list else "this item"
+        # Delivery Badge
+        st.markdown(textwrap.dedent(f"""
+        <div style="background: white; border-radius: 14px; padding: 12px 14px; border: 1px solid #f1f5f9; margin-top: 10px; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <span style="font-size: 18px;">⏱️</span>
+                <div>
+                    <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 0;">Delivery in 16 minutes</h4>
+                    <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>
+                </div>
+            </div>
+        </div>
+        """), unsafe_allow_html=True)
 
-    t0 = time.perf_counter()
-    recommendations = router.get_cart_recommendations(cart_skus)
-    st.session_state.latency_metrics["sqlite"] = (time.perf_counter() - t0) * 1000
-    valid_recs = [r for r in recommendations if r["sku_id"] not in st.session_state.cart]
+        # Cart Items List
+        for sku_id, item in list(st.session_state.cart.items()):
+            img = get_product_image_url(sku_id, item["name"])
+            st.markdown(textwrap.dedent(f"""
+            <div style="background: white; border-radius: 12px; padding: 10px; border: 1px solid #f1f5f9; margin-bottom: 6px; font-family: 'Outfit', sans-serif;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <img src="{img}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 6px; border: 1px solid #e2e8f0; padding: 2px;">
+                    <div style="flex: 1;">
+                        <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 0; line-height: 1.2;">{item["name"]}</p>
+                        <p style="font-size: 11px; font-weight: 800; color: #0f172a; margin: 2px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>
+                    </div>
+                </div>
+            </div>
+            """), unsafe_allow_html=True)
+            
+            q_col1, q_col2, q_col3 = st.columns([1, 1, 1])
+            with q_col1:
+                if st.button("−", key=f"sb_dec_{sku_id}", use_container_width=True):
+                    st.session_state.cart[sku_id]["qty"] -= 1
+                    if st.session_state.cart[sku_id]["qty"] <= 0:
+                        del st.session_state.cart[sku_id]
+                    st.rerun()
+            with q_col2:
+                st.markdown(f'<div style="text-align: center; font-weight: 800; font-size: 13px; font-family: \'Outfit\', sans-serif; margin-top: 4px;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
+            with q_col3:
+                if st.button("+", key=f"sb_inc_{sku_id}", use_container_width=True):
+                    st.session_state.cart[sku_id]["qty"] += 1
+                    st.rerun()
 
-    indian_names = ["Saksham", "Aarav", "Priya", "Rohan", "Ananya", "Dev", "Isha", "Karan", "Tanvi", "Aditya"]
-    distances = ["0.5km", "0.8km", "1km", "1.2km", "1.5km"]
+        # Category-Matched Recommendations
+        cart_skus = list(st.session_state.cart.keys())
+        cart_items_list = list(st.session_state.cart.values())
+        first_item_name = cart_items_list[0]["name"] if cart_items_list else "this item"
+        recommendations = router.get_cart_recommendations(cart_skus)
+        valid_recs = [r for r in recommendations if r["sku_id"] not in st.session_state.cart]
 
-    recs_html = ""
-    if valid_recs:
-        rec_cards = []
-        for idx, r in enumerate(valid_recs[:2]):
-            r_img = get_product_image_url(r["sku_id"], r["name"])
-            person_name = indian_names[idx % len(indian_names)]
-            dist = distances[idx % len(distances)]
-            social_proof_text = f"⚡ {person_name} from {dist} distance also ordered {r['name']} when ordering {first_item_name}"
+        if valid_recs:
+            st.markdown(textwrap.dedent("""
+            <div style="margin-top: 16px; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">
+                <h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0;">People who bought this also bought this</h4>
+            </div>
+            """), unsafe_allow_html=True)
 
-            rc = (
-                f'<div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f8fafc; gap: 8px;">'
-                f'<div style="display: flex; align-items: center; gap: 10px; overflow: hidden;">'
-                f'<div style="width: 42px; height: 42px; min-width: 42px; border: 1px solid #e2e8f0; border-radius: 8px; display: flex; align-items: center; justify-content: center; background: white; padding: 3px; flex-shrink: 0;">'
-                f'<img src="{r_img}" alt="{r["name"]}" style="width: 100%; height: 100%; object-fit: contain; display: block;">'
-                f'</div>'
-                f'<div>'
-                f'<span style="font-size: 9px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block; line-height: 1.3;">{social_proof_text}</span>'
-                f'<p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 3px 0 0 0; line-height: 1.2;">{r["name"]}</p>'
-                f'<p style="font-size: 11px; font-weight: 700; color: #64748b; margin: 1px 0 0 0;">₹{r["price"]:.0f}</p>'
-                f'</div>'
-                f'</div>'
-                f'<a href="?action=add&sku={r["sku_id"]}" target="_self" style="background: white; border: 1.5px solid #0C831F; color: #0C831F; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 800; text-decoration: none; flex-shrink: 0;">+ ADD</a>'
-                f'</div>'
-            )
-            rec_cards.append(rc)
+            indian_names = ["Saksham", "Aarav", "Priya", "Rohan", "Ananya", "Dev", "Isha", "Karan", "Tanvi", "Aditya"]
+            distances = ["0.5km", "0.8km", "1km", "1.2km", "1.5km"]
 
-        recs_html = (
-            f'<div style="background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">'
-            f'<h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0 0 10px 0;">People who bought this also bought this</h4>'
-            f'{"".join(rec_cards)}'
-            f'</div>'
-        )
+            for idx, r in enumerate(valid_recs[:2]):
+                r_img = get_product_image_url(r["sku_id"], r["name"])
+                person_name = indian_names[idx % len(indian_names)]
+                dist = distances[idx % len(distances)]
+                social_proof_text = f"⚡ {person_name} from {dist} distance also ordered {r['name']} when ordering {first_item_name}"
 
-    # Single-line Drawer Overlay HTML
-    drawer_html = (
-        f'<a href="?action=close_cart" target="_self" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.4); z-index: 999990; text-decoration: none; cursor: default;"></a>'
-        f'<div style="position: fixed; top: 0; right: 0; width: 390px; max-width: 90vw; height: 100vh; background: #f8fafc; z-index: 999999; box-shadow: -6px 0 30px rgba(0,0,0,0.2); overflow-y: auto; display: flex; flex-direction: column; font-family: \'Outfit\', sans-serif;">'
-        f'<div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: white; border-bottom: 1px solid #f1f5f9; position: sticky; top: 0; z-index: 20;">'
-        f'<div style="display: flex; align-items: center; gap: 10px;">'
-        f'<a href="?action=close_cart" target="_self" style="color: #0f172a; text-decoration: none; font-size: 18px; font-weight: 800; display: flex; align-items: center;">←</a>'
-        f'<span style="font-size: 16px; font-weight: 800; color: #0f172a;">My Cart</span>'
-        f'</div>'
-        f'<a href="#" style="color: #0C831F; text-decoration: none; font-size: 12px; font-weight: 800; display: flex; align-items: center; gap: 4px;">🛒 Share</a>'
-        f'</div>'
-        f'<div style="padding: 14px; display: flex; flex-direction: column; gap: 14px; flex: 1;">'
-        f'<div style="background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">'
-        f'<div style="display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f8fafc; padding-bottom: 10px; margin-bottom: 10px;">'
-        f'<div style="width: 36px; height: 36px; border-radius: 50%; background: #fef3c7; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #d97706;">⏱️</div>'
-        f'<div>'
-        f'<h4 style="font-size: 14px; font-weight: 900; color: #0f172a; margin: 0; line-height: 1.2;">Delivery in 16 minutes</h4>'
-        f'<p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0; font-weight: 500;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>'
-        f'</div>'
-        f'</div>'
-        f'{items_html}'
-        f'</div>'
-        f'{recs_html}'
-        f'<div style="background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">'
-        f'<h4 style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 0 0 10px 0;">Bill details</h4>'
-        f'<div style="display: flex; flex-direction: column; gap: 8px; font-size: 12px; color: #475569; font-weight: 500;">'
-        f'<div style="display: flex; justify-content: space-between;"><span>📄 Items total</span><span style="font-weight: 700; color: #0f172a;">₹{subtotal:.0f}</span></div>'
-        f'<div style="display: flex; justify-content: space-between;"><span>🚚 Delivery charge <span style="color: #94a3b8;">ⓘ</span></span><span style="font-weight: 700; color: #0f172a;">₹{delivery_charge:.0f}</span></div>'
-        f'<div style="display: flex; justify-content: space-between;"><span>🛍️ Handling charge <span style="color: #94a3b8;">ⓘ</span></span><span style="font-weight: 700; color: #0f172a;">₹{handling_charge:.0f}</span></div>'
-        f'<div style="display: flex; justify-content: space-between;"><span>📈 High demand surge charge <span style="color: #94a3b8;">ⓘ</span></span><span style="font-weight: 700; color: #0f172a;">₹{surge_charge:.0f}</span></div>'
-        f'<div style="padding-top: 10px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; margin-top: 2px;"><span style="font-size: 14px; font-weight: 900; color: #0f172a;">Grand total <span style="font-size: 11px; color: #94a3b8; font-weight: 400;">ⓘ</span></span><span style="font-size: 16px; font-weight: 900; color: #0f172a;">₹{grand_total:.0f}</span></div>'
-        f'</div>'
-        f'</div>'
-        f'<div style="background: white; border-radius: 16px; padding: 14px 16px; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02);">'
-        f'<h4 style="font-size: 12px; font-weight: 800; color: #0f172a; margin: 0 0 4px 0;">Cancellation Policy</h4>'
-        f'<p style="font-size: 11px; color: #64748b; margin: 0; line-height: 1.5;">Orders cannot be cancelled once packed for delivery. In case of unexpected delays, a refund will be provided, if applicable.</p>'
-        f'</div>'
-        f'<a href="?action=checkout" target="_self" style="position: sticky; bottom: 0; background: #0C831F; color: white; padding: 12px 16px; border-radius: 14px; display: flex; align-items: center; justify-content: space-between; margin-top: 4px; text-decoration: none; box-shadow: 0 4px 14px rgba(12,131,31,0.35);">'
-        f'<div><span style="font-size: 17px; font-weight: 900; display: block; line-height: 1;">₹{grand_total:.0f}</span><span style="font-size: 9px; font-weight: 700; letter-spacing: 1px; opacity: 0.85; text-transform: uppercase;">TOTAL</span></div>'
-        f'<div style="display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 800;"><span>Login to Proceed</span><span style="font-size: 16px;">›</span></div>'
-        f'</a>'
-        f'</div>'
-        f'</div>'
-    )
-    st.markdown(drawer_html, unsafe_allow_html=True)
+                r_col1, r_col2 = st.columns([7, 3])
+                with r_col1:
+                    st.markdown(textwrap.dedent(f"""
+                    <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #f1f5f9; font-family: 'Outfit', sans-serif;">
+                        <span style="font-size: 9px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block;">{social_proof_text}</span>
+                        <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 4px 0 0 0;">{r["name"]}</p>
+                        <p style="font-size: 11px; font-weight: 800; color: #64748b; margin: 1px 0 0 0;">₹{r["price"]:.0f}</p>
+                    </div>
+                    """), unsafe_allow_html=True)
+                with r_col2:
+                    if st.button("+ ADD", key=f"sb_rec_add_{r['sku_id']}_{idx}", use_container_width=True):
+                        add_to_cart(r["sku_id"], r["name"], r["price"], r["category"])
+                        st.rerun()
+
+        # Bill details & Checkout Button
+        st.markdown(textwrap.dedent(f"""
+        <div style="background: white; border-radius: 14px; padding: 12px; border: 1px solid #f1f5f9; margin-top: 16px; font-family: 'Outfit', sans-serif;">
+            <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">Bill details</h4>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Items total</span><span style="font-weight: 700;">₹{subtotal:.0f}</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Delivery charge</span><span style="font-weight: 700;">₹{delivery_charge:.0f}</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Handling charge</span><span style="font-weight: 700;">₹{handling_charge:.0f}</span></div>
+            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Surge charge</span><span style="font-weight: 700;">₹{surge_charge:.0f}</span></div>
+            <div style="padding-top: 8px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; margin-top: 6px; font-weight: 900; font-size: 14px; color: #0f172a;"><span>Grand Total</span><span>₹{grand_total:.0f}</span></div>
+        </div>
+        """), unsafe_allow_html=True)
+
+        if st.button(f"Proceed to Pay • ₹{grand_total:.0f} ›", key="sb_checkout_btn", use_container_width=True, type="primary"):
+            st.session_state.cart = {}
+            st.session_state.show_cart = False
+            st.toast("Order placed successfully! Arriving in 16 minutes. 🚀", icon="🎉")
+            st.rerun()
 
 
 
