@@ -401,7 +401,7 @@ def get_product_image_url(sku_id, name=""):
         
     return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop"
 
-# Process query param actions (for external deep-links)
+# Process optional deep-link query params on first load without forcing extra re-reruns
 if st.query_params and "action" in st.query_params:
     action = st.query_params["action"]
     sku = st.query_params.get("sku")
@@ -438,23 +438,20 @@ if st.query_params and "action" in st.query_params:
                 del st.session_state.cart[sku]
             st.toast("Updated cart!", icon="🛒")
     st.query_params.clear()
-    st.rerun()
 
 def render_product_card_html(sku_id, image_url, name, price, category, meta_text):
     return textwrap.dedent(f"""
     <div class="product-card">
-        <a href="?action=detail&sku={sku_id}" target="_self" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
-            <div class="product-card-image-wrap">
-                <img class="product-card-image" src="{image_url}" alt="{name}">
-            </div>
-            <div class="product-card-body">
-                <h4 class="product-card-title">{name}</h4>
-                <p class="product-card-meta">{meta_text}</p>
-            </div>
-            <div class="product-card-price-row">
-                <span class="product-card-price">₹{price:.0f}</span>
-            </div>
-        </a>
+        <div class="product-card-image-wrap">
+            <img class="product-card-image" src="{image_url}" alt="{name}">
+        </div>
+        <div class="product-card-body">
+            <h4 class="product-card-title">{name}</h4>
+            <p class="product-card-meta">{meta_text}</p>
+        </div>
+        <div class="product-card-price-row">
+            <span class="product-card-price">₹{price:.0f}</span>
+        </div>
     </div>
     """)
 
@@ -986,9 +983,16 @@ else:
                         ),
                         unsafe_allow_html=True,
                     )
-                    if st.button("+ ADD 🛒", key=f"srch_add_{sku_id}", use_container_width=True):
-                        add_to_cart(sku_id, name, price, category)
-                        st.rerun()
+                    c_view, c_add = st.columns([1, 1])
+                    with c_view:
+                        if st.button("View Product 👁️", key=f"srch_view_{sku_id}", use_container_width=True):
+                            st.session_state.selected_product = sku_id
+                            st.session_state.show_cart = False
+                            st.rerun()
+                    with c_add:
+                        if st.button("+ ADD 🛒", key=f"srch_add_{sku_id}", use_container_width=True):
+                            add_to_cart(sku_id, name, price, category)
+                            st.rerun()
         else:
             st.info("No matching products found. Try another search query!")
             
@@ -1069,9 +1073,16 @@ else:
                     ),
                     unsafe_allow_html=True,
                 )
-                if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}", use_container_width=True):
-                    add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
-                    st.rerun()
+                c_view, c_add = st.columns([1, 1])
+                with c_view:
+                    if st.button("View Product 👁️", key=f"stp_view_{s['sku_id']}", use_container_width=True):
+                        st.session_state.selected_product = s["sku_id"]
+                        st.session_state.show_cart = False
+                        st.rerun()
+                with c_add:
+                    if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}", use_container_width=True):
+                        add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
+                        st.rerun()
 
 # --- FLOATING OVERLAY CART DRAWER ---
 render_cart_drawer()
