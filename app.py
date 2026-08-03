@@ -357,9 +357,14 @@ def get_product_image_url(sku_id, name=""):
         "SKU-STAPLE-MILK": "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=500&auto=format&fit=crop",
         "SKU-STAPLE-BREAD": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop",
         "SKU-SUNSCREEN": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=500&auto=format&fit=crop",
+        "SKU-LIPBALM": "https://images.unsplash.com/photo-1617897903246-719242758050?w=500&auto=format&fit=crop",
         "SKU-CABLE": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop",
+        "SKU-BLENDER": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&auto=format&fit=crop",
+        "SKU-AIRPODS": "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop",
         "SKU-SCRUNCHIE": "https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=500&auto=format&fit=crop",
-        "SKU-SOCKS": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500&auto=format&fit=crop"
+        "SKU-SOCKS": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500&auto=format&fit=crop",
+        "SKU-TSHIRT": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop",
+        "SKU-JEANS": "https://images.unsplash.com/photo-1542272604-780c36856842?w=500&auto=format&fit=crop"
     }
     
     if sku_id in mapping:
@@ -371,14 +376,24 @@ def get_product_image_url(sku_id, name=""):
         return "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&auto=format&fit=crop"
     elif "bread" in name_lower or "toast" in name_lower or "pav" in name_lower:
         return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop"
+    elif "balm" in name_lower or "lip" in name_lower:
+        return "https://images.unsplash.com/photo-1617897903246-719242758050?w=500&auto=format&fit=crop"
     elif "wash" in name_lower or "cream" in name_lower or "lotion" in name_lower or "cleanser" in name_lower:
         return "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&auto=format&fit=crop"
     elif "milk" in name_lower or "dairy" in name_lower or "dahi" in name_lower:
         return "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=500&auto=format&fit=crop"
     elif "sunscreen" in name_lower or "spf" in name_lower:
         return "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=500&auto=format&fit=crop"
+    elif "blender" in name_lower or "juicer" in name_lower or "mixer" in name_lower:
+        return "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&auto=format&fit=crop"
+    elif "airpod" in name_lower or "earbud" in name_lower or "headphone" in name_lower:
+        return "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop"
     elif "cable" in name_lower or "charge" in name_lower or "usb" in name_lower:
         return "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop"
+    elif "shirt" in name_lower or "t-shirt" in name_lower or "top" in name_lower:
+        return "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop"
+    elif "jean" in name_lower or "denim" in name_lower or "pant" in name_lower or "trouser" in name_lower:
+        return "https://images.unsplash.com/photo-1542272604-780c36856842?w=500&auto=format&fit=crop"
     elif "scrunchie" in name_lower or "hair" in name_lower:
         return "https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=500&auto=format&fit=crop"
     elif "sock" in name_lower or "apparel" in name_lower:
