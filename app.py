@@ -748,6 +748,8 @@ with header_c2:
         st.session_state.show_cart = not st.session_state.show_cart
         st.rerun()
 
+is_pdp_active = st.session_state.selected_product is not None
+
 # 2. Main Page Search Box (Visually Appealing Search Bar)
 search_col1, search_col2 = st.columns([10, 2])
 with search_col1:
@@ -763,29 +765,29 @@ with search_col2:
             st.session_state.active_category = "All"
             st.rerun()
 
-# 3. Category Horizontal Row
-st.markdown(textwrap.dedent("""
-<div class="my-6 border-b border-gray-200/50 pb-2">
-<p class="text-xs uppercase text-gray-400 font-bold tracking-wider font-outfit">Filter Categories</p>
-</div>
-"""), unsafe_allow_html=True)
+# 3. Category Horizontal Row (Shown ONLY on Home/Catalog page, hidden on PDP)
+if not is_pdp_active:
+    st.markdown(textwrap.dedent("""
+    <div class="my-6 border-b border-gray-200/50 pb-2">
+    <p class="text-xs uppercase text-gray-400 font-bold tracking-wider font-outfit">Filter Categories</p>
+    </div>
+    """), unsafe_allow_html=True)
 
-col_all, col_gro, col_ele, col_beau, col_clo = st.columns(5)
-with col_all:
-    if st.button("🛒 All Products", key="cat_all"): st.session_state.active_category = "All"
-with col_gro:
-    if st.button("🍏 Grocery", key="cat_gro"): st.session_state.active_category = "Grocery"
-with col_ele:
-    if st.button("⚡ Electronics", key="cat_ele"): st.session_state.active_category = "Electronics"
-with col_beau:
-    if st.button("🧴 Beauty & Skincare", key="cat_beau"): st.session_state.active_category = "Beauty/Skincare"
-with col_clo:
-    if st.button("👕 Clothing", key="cat_clo"): st.session_state.active_category = "Clothing"
+    col_all, col_gro, col_ele, col_beau, col_clo = st.columns(5)
+    with col_all:
+        if st.button("🛒 All Products", key="cat_all"): st.session_state.active_category = "All"
+    with col_gro:
+        if st.button("🍏 Grocery", key="cat_gro"): st.session_state.active_category = "Grocery"
+    with col_ele:
+        if st.button("⚡ Electronics", key="cat_ele"): st.session_state.active_category = "Electronics"
+    with col_beau:
+        if st.button("🧴 Beauty & Skincare", key="cat_beau"): st.session_state.active_category = "Beauty/Skincare"
+    with col_clo:
+        if st.button("👕 Clothing", key="cat_clo"): st.session_state.active_category = "Clothing"
 
 # Determine state switches
 is_searching = bool(search_q)
 is_filtering = st.session_state.active_category != "All"
-is_pdp_active = st.session_state.selected_product is not None
 
 # --- PRODUCT DISPLAY OVERLAY (PDP) ---
 if is_pdp_active:
