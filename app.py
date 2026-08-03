@@ -442,16 +442,18 @@ if st.query_params and "action" in st.query_params:
 def render_product_card_html(sku_id, image_url, name, price, category, meta_text):
     return textwrap.dedent(f"""
     <div class="product-card">
-        <div class="product-card-image-wrap">
-            <img class="product-card-image" src="{image_url}" alt="{name}">
-        </div>
-        <div class="product-card-body">
-            <h4 class="product-card-title">{name}</h4>
-            <p class="product-card-meta">{meta_text}</p>
-        </div>
-        <div class="product-card-price-row">
-            <span class="product-card-price">₹{price:.0f}</span>
-        </div>
+        <a href="?action=detail&sku={sku_id}" target="_self" style="text-decoration: none; color: inherit; display: block; cursor: pointer;">
+            <div class="product-card-image-wrap">
+                <img class="product-card-image" src="{image_url}" alt="{name}">
+            </div>
+            <div class="product-card-body">
+                <h4 class="product-card-title">{name}</h4>
+                <p class="product-card-meta">{meta_text}</p>
+            </div>
+            <div class="product-card-price-row">
+                <span class="product-card-price">₹{price:.0f}</span>
+            </div>
+        </a>
     </div>
     """)
 
@@ -983,16 +985,9 @@ else:
                         ),
                         unsafe_allow_html=True,
                     )
-                    c_view, c_add = st.columns([1, 1])
-                    with c_view:
-                        if st.button("View Product 👁️", key=f"srch_view_{sku_id}", use_container_width=True):
-                            st.session_state.selected_product = sku_id
-                            st.session_state.show_cart = False
-                            st.rerun()
-                    with c_add:
-                        if st.button("+ ADD 🛒", key=f"srch_add_{sku_id}", use_container_width=True):
-                            add_to_cart(sku_id, name, price, category)
-                            st.rerun()
+                    if st.button("+ ADD 🛒", key=f"srch_add_{sku_id}", use_container_width=True):
+                        add_to_cart(sku_id, name, price, category)
+                        st.rerun()
         else:
             st.info("No matching products found. Try another search query!")
             
@@ -1073,16 +1068,9 @@ else:
                     ),
                     unsafe_allow_html=True,
                 )
-                c_view, c_add = st.columns([1, 1])
-                with c_view:
-                    if st.button("View Product 👁️", key=f"stp_view_{s['sku_id']}", use_container_width=True):
-                        st.session_state.selected_product = s["sku_id"]
-                        st.session_state.show_cart = False
-                        st.rerun()
-                with c_add:
-                    if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}", use_container_width=True):
-                        add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
-                        st.rerun()
+                if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}", use_container_width=True):
+                    add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
+                    st.rerun()
 
 # --- FLOATING OVERLAY CART DRAWER ---
 render_cart_drawer()
