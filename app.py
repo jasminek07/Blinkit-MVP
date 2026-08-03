@@ -576,130 +576,129 @@ def render_cart_drawer():
     if not st.session_state.show_cart:
         return
 
-    with st.sidebar:
-        # Header Row
-        h_col1, h_col2 = st.columns([7, 3])
-        with h_col1:
-            st.markdown('<h3 style="font-family: \'Outfit\', sans-serif; font-size: 18px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>', unsafe_allow_html=True)
-        with h_col2:
-            if st.button("✕ Close", key="sidebar_close_cart_btn", use_container_width=True):
-                st.session_state.show_cart = False
+    # Header Row
+    h_col1, h_col2 = st.columns([7, 3])
+    with h_col1:
+        st.markdown('<h3 style="font-family: \'Outfit\', sans-serif; font-size: 18px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>', unsafe_allow_html=True)
+    with h_col2:
+        if st.button("✕ Close", key="cart_drawer_close_btn", use_container_width=True):
+            st.session_state.show_cart = False
+            st.rerun()
+
+    # If cart is empty
+    if not st.session_state.cart:
+        st.markdown(textwrap.dedent("""
+        <div style="background: white; border-radius: 16px; padding: 30px 16px; text-align: center; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
+            <div style="font-size: 40px; margin-bottom: 8px;">🛒</div>
+            <h4 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0;">Your cart is empty</h4>
+            <p style="font-size: 12px; color: #64748b; margin: 0;">Explore fresh products and add items to unlock 10-minute delivery in DLF Phase 3!</p>
+        </div>
+        """), unsafe_allow_html=True)
+        return
+
+    total_items = get_cart_count()
+    subtotal = get_cart_subtotal()
+    delivery_charge = 25.0
+    handling_charge = 2.0
+    surge_charge = 30.0
+    grand_total = subtotal + delivery_charge + handling_charge + surge_charge
+
+    # Delivery Badge
+    st.markdown(textwrap.dedent(f"""
+    <div style="background: white; border-radius: 14px; padding: 12px 14px; border: 1px solid #e2e8f0; margin-top: 10px; margin-bottom: 10px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+        <div style="display: flex; align-items: center; gap: 10px;">
+            <span style="font-size: 20px;">⏱️</span>
+            <div>
+                <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 0;">Delivery in 16 minutes</h4>
+                <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>
+            </div>
+        </div>
+    </div>
+    """), unsafe_allow_html=True)
+
+    # Cart Items List
+    for sku_id, item in list(st.session_state.cart.items()):
+        img = get_product_image_url(sku_id, item["name"])
+        st.markdown(textwrap.dedent(f"""
+        <div style="background: white; border-radius: 12px; padding: 10px 12px; border: 1px solid #e2e8f0; margin-bottom: 6px; font-family: 'Outfit', sans-serif;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <img src="{img}" style="width: 42px; height: 42px; object-fit: contain; border-radius: 6px; border: 1px solid #e2e8f0; padding: 2px;">
+                <div style="flex: 1;">
+                    <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 0; line-height: 1.2;">{item["name"]}</p>
+                    <p style="font-size: 11px; font-weight: 900; color: #0f172a; margin: 2px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>
+                </div>
+            </div>
+        </div>
+        """), unsafe_allow_html=True)
+        
+        q_col1, q_col2, q_col3 = st.columns([1, 1, 1])
+        with q_col1:
+            if st.button("−", key=f"drawer_dec_{sku_id}", use_container_width=True):
+                st.session_state.cart[sku_id]["qty"] -= 1
+                if st.session_state.cart[sku_id]["qty"] <= 0:
+                    del st.session_state.cart[sku_id]
+                st.rerun()
+        with q_col2:
+            st.markdown(f'<div style="text-align: center; font-weight: 800; font-size: 13px; font-family: \'Outfit\', sans-serif; margin-top: 4px;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
+        with q_col3:
+            if st.button("+", key=f"drawer_inc_{sku_id}", use_container_width=True):
+                st.session_state.cart[sku_id]["qty"] += 1
                 st.rerun()
 
-        # If cart is empty
-        if not st.session_state.cart:
-            st.markdown(textwrap.dedent("""
-            <div style="padding: 40px 10px; text-align: center; font-family: 'Outfit', sans-serif;">
-                <div style="font-size: 40px; margin-bottom: 10px;">🛒</div>
-                <h4 style="font-size: 16px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0;">Your cart is empty</h4>
-                <p style="font-size: 12px; color: #64748b; margin: 0;">Explore fresh products and add items to unlock 10-minute delivery in DLF Phase 3!</p>
-            </div>
-            """), unsafe_allow_html=True)
-            return
+    # Category-Matched Recommendations
+    cart_skus = list(st.session_state.cart.keys())
+    cart_items_list = list(st.session_state.cart.values())
+    first_item_name = cart_items_list[0]["name"] if cart_items_list else "this item"
+    recommendations = router.get_cart_recommendations(cart_skus)
+    valid_recs = [r for r in recommendations if r["sku_id"] not in st.session_state.cart]
 
-        total_items = get_cart_count()
-        subtotal = get_cart_subtotal()
-        delivery_charge = 25.0
-        handling_charge = 2.0
-        surge_charge = 30.0
-        grand_total = subtotal + delivery_charge + handling_charge + surge_charge
-
-        # Delivery Badge
-        st.markdown(textwrap.dedent(f"""
-        <div style="background: white; border-radius: 14px; padding: 12px 14px; border: 1px solid #f1f5f9; margin-top: 10px; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
-            <div style="display: flex; align-items: center; gap: 10px;">
-                <span style="font-size: 18px;">⏱️</span>
-                <div>
-                    <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; margin: 0;">Delivery in 16 minutes</h4>
-                    <p style="font-size: 11px; color: #64748b; margin: 2px 0 0 0;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>
-                </div>
-            </div>
+    if valid_recs:
+        st.markdown(textwrap.dedent("""
+        <div style="margin-top: 14px; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">
+            <h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0;">People who bought this also bought this</h4>
         </div>
         """), unsafe_allow_html=True)
 
-        # Cart Items List
-        for sku_id, item in list(st.session_state.cart.items()):
-            img = get_product_image_url(sku_id, item["name"])
-            st.markdown(textwrap.dedent(f"""
-            <div style="background: white; border-radius: 12px; padding: 10px; border: 1px solid #f1f5f9; margin-bottom: 6px; font-family: 'Outfit', sans-serif;">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="{img}" style="width: 40px; height: 40px; object-fit: contain; border-radius: 6px; border: 1px solid #e2e8f0; padding: 2px;">
-                    <div style="flex: 1;">
-                        <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 0; line-height: 1.2;">{item["name"]}</p>
-                        <p style="font-size: 11px; font-weight: 800; color: #0f172a; margin: 2px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>
-                    </div>
+        indian_names = ["Saksham", "Aarav", "Priya", "Rohan", "Ananya", "Dev", "Isha", "Karan", "Tanvi", "Aditya"]
+        distances = ["0.5km", "0.8km", "1km", "1.2km", "1.5km"]
+
+        for idx, r in enumerate(valid_recs[:2]):
+            r_img = get_product_image_url(r["sku_id"], r["name"])
+            person_name = indian_names[idx % len(indian_names)]
+            dist = distances[idx % len(distances)]
+            social_proof_text = f"⚡ {person_name} from {dist} distance also ordered {r['name']} when ordering {first_item_name}"
+
+            r_col1, r_col2 = st.columns([7, 3])
+            with r_col1:
+                st.markdown(textwrap.dedent(f"""
+                <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif;">
+                    <span style="font-size: 9px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block;">{social_proof_text}</span>
+                    <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 4px 0 0 0;">{r["name"]}</p>
+                    <p style="font-size: 11px; font-weight: 800; color: #64748b; margin: 1px 0 0 0;">₹{r["price"]:.0f}</p>
                 </div>
-            </div>
-            """), unsafe_allow_html=True)
-            
-            q_col1, q_col2, q_col3 = st.columns([1, 1, 1])
-            with q_col1:
-                if st.button("−", key=f"sb_dec_{sku_id}", use_container_width=True):
-                    st.session_state.cart[sku_id]["qty"] -= 1
-                    if st.session_state.cart[sku_id]["qty"] <= 0:
-                        del st.session_state.cart[sku_id]
-                    st.rerun()
-            with q_col2:
-                st.markdown(f'<div style="text-align: center; font-weight: 800; font-size: 13px; font-family: \'Outfit\', sans-serif; margin-top: 4px;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
-            with q_col3:
-                if st.button("+", key=f"sb_inc_{sku_id}", use_container_width=True):
-                    st.session_state.cart[sku_id]["qty"] += 1
+                """), unsafe_allow_html=True)
+            with r_col2:
+                if st.button("+ ADD", key=f"drawer_rec_add_{r['sku_id']}_{idx}", use_container_width=True):
+                    add_to_cart(r["sku_id"], r["name"], r["price"], r["category"])
                     st.rerun()
 
-        # Category-Matched Recommendations
-        cart_skus = list(st.session_state.cart.keys())
-        cart_items_list = list(st.session_state.cart.values())
-        first_item_name = cart_items_list[0]["name"] if cart_items_list else "this item"
-        recommendations = router.get_cart_recommendations(cart_skus)
-        valid_recs = [r for r in recommendations if r["sku_id"] not in st.session_state.cart]
+    # Bill details & Checkout Button
+    st.markdown(textwrap.dedent(f"""
+    <div style="background: white; border-radius: 14px; padding: 12px; border: 1px solid #e2e8f0; margin-top: 14px; font-family: 'Outfit', sans-serif;">
+        <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">Bill details</h4>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Items total</span><span style="font-weight: 700;">₹{subtotal:.0f}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Delivery charge</span><span style="font-weight: 700;">₹{delivery_charge:.0f}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Handling charge</span><span style="font-weight: 700;">₹{handling_charge:.0f}</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Surge charge</span><span style="font-weight: 700;">₹{surge_charge:.0f}</span></div>
+        <div style="padding-top: 8px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; margin-top: 6px; font-weight: 900; font-size: 14px; color: #0f172a;"><span>Grand Total</span><span>₹{grand_total:.0f}</span></div>
+    </div>
+    """), unsafe_allow_html=True)
 
-        if valid_recs:
-            st.markdown(textwrap.dedent("""
-            <div style="margin-top: 16px; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">
-                <h4 style="font-size: 11px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0;">People who bought this also bought this</h4>
-            </div>
-            """), unsafe_allow_html=True)
-
-            indian_names = ["Saksham", "Aarav", "Priya", "Rohan", "Ananya", "Dev", "Isha", "Karan", "Tanvi", "Aditya"]
-            distances = ["0.5km", "0.8km", "1km", "1.2km", "1.5km"]
-
-            for idx, r in enumerate(valid_recs[:2]):
-                r_img = get_product_image_url(r["sku_id"], r["name"])
-                person_name = indian_names[idx % len(indian_names)]
-                dist = distances[idx % len(distances)]
-                social_proof_text = f"⚡ {person_name} from {dist} distance also ordered {r['name']} when ordering {first_item_name}"
-
-                r_col1, r_col2 = st.columns([7, 3])
-                with r_col1:
-                    st.markdown(textwrap.dedent(f"""
-                    <div style="background: white; border-radius: 10px; padding: 8px; border: 1px solid #f1f5f9; font-family: 'Outfit', sans-serif;">
-                        <span style="font-size: 9px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 2px 6px; border-radius: 4px; display: inline-block;">{social_proof_text}</span>
-                        <p style="font-size: 12px; font-weight: 700; color: #0f172a; margin: 4px 0 0 0;">{r["name"]}</p>
-                        <p style="font-size: 11px; font-weight: 800; color: #64748b; margin: 1px 0 0 0;">₹{r["price"]:.0f}</p>
-                    </div>
-                    """), unsafe_allow_html=True)
-                with r_col2:
-                    if st.button("+ ADD", key=f"sb_rec_add_{r['sku_id']}_{idx}", use_container_width=True):
-                        add_to_cart(r["sku_id"], r["name"], r["price"], r["category"])
-                        st.rerun()
-
-        # Bill details & Checkout Button
-        st.markdown(textwrap.dedent(f"""
-        <div style="background: white; border-radius: 14px; padding: 12px; border: 1px solid #f1f5f9; margin-top: 16px; font-family: 'Outfit', sans-serif;">
-            <h4 style="font-size: 13px; font-weight: 800; color: #0f172a; margin: 0 0 8px 0;">Bill details</h4>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Items total</span><span style="font-weight: 700;">₹{subtotal:.0f}</span></div>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Delivery charge</span><span style="font-weight: 700;">₹{delivery_charge:.0f}</span></div>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Handling charge</span><span style="font-weight: 700;">₹{handling_charge:.0f}</span></div>
-            <div style="display: flex; justify-content: space-between; font-size: 12px; color: #475569;"><span>Surge charge</span><span style="font-weight: 700;">₹{surge_charge:.0f}</span></div>
-            <div style="padding-top: 8px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; margin-top: 6px; font-weight: 900; font-size: 14px; color: #0f172a;"><span>Grand Total</span><span>₹{grand_total:.0f}</span></div>
-        </div>
-        """), unsafe_allow_html=True)
-
-        if st.button(f"Proceed to Pay • ₹{grand_total:.0f} ›", key="sb_checkout_btn", use_container_width=True, type="primary"):
-            st.session_state.cart = {}
-            st.session_state.show_cart = False
-            st.toast("Order placed successfully! Arriving in 16 minutes. 🚀", icon="🎉")
-            st.rerun()
+    if st.button(f"Proceed to Pay • ₹{grand_total:.0f} ›", key="drawer_checkout_btn", use_container_width=True, type="primary"):
+        st.session_state.cart = {}
+        st.session_state.show_cart = False
+        st.toast("Order placed successfully! Arriving in 16 minutes. 🚀", icon="🎉")
+        st.rerun()
 
 
 
@@ -767,9 +766,19 @@ if not is_pdp_active:
 is_searching = bool(search_q)
 is_filtering = st.session_state.active_category != "All"
 
-# --- PRODUCT DISPLAY OVERLAY (PDP) ---
-if is_pdp_active:
-    sku_id = st.session_state.selected_product
+# Render side-by-side layout when cart drawer is open
+if st.session_state.show_cart:
+    main_view_col, cart_view_col = st.columns([7, 5])
+    with cart_view_col:
+        render_cart_drawer()
+    page_container = main_view_col
+else:
+    page_container = st.container()
+
+with page_container:
+    # --- PRODUCT DISPLAY OVERLAY (PDP) ---
+    if is_pdp_active:
+        sku_id = st.session_state.selected_product
     
     # Ingest catalog details
     conn = sqlite3.connect(DB_PATH)
@@ -919,9 +928,7 @@ if is_pdp_active:
                 {render_customer_reviews_html(sample_reviews)}
             </div>
             """), unsafe_allow_html=True)
-else:
-    left_content = st.container()
-    with left_content:
+    else:
         st.markdown("---")
 
     # --- SEARCH / FILTER RESULTS PANEL ---
@@ -1051,9 +1058,6 @@ else:
                 if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}", use_container_width=True):
                     add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
                     st.rerun()
-
-# --- FLOATING OVERLAY CART DRAWER ---
-render_cart_drawer()
 
 # --- DESKTOP WEB FOOTER ---
 st.markdown(textwrap.dedent("""
