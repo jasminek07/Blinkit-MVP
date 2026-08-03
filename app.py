@@ -386,8 +386,8 @@ def get_product_image_url(sku_id, name=""):
         
     return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop"
 
-# Process query param actions
-if "action" in st.query_params:
+# Process query param actions (for external deep-links)
+if st.query_params and "action" in st.query_params:
     action = st.query_params["action"]
     sku = st.query_params.get("sku")
     
@@ -428,18 +428,15 @@ if "action" in st.query_params:
 def render_product_card_html(sku_id, image_url, name, price, category, meta_text):
     return textwrap.dedent(f"""
     <div class="product-card">
-        <a href="?action=detail&sku={sku_id}" target="_self" style="text-decoration: none; color: inherit; display: block;">
-            <div class="product-card-image-wrap">
-                <img class="product-card-image" src="{image_url}" alt="{name}">
-            </div>
-            <div class="product-card-body">
-                <h4 class="product-card-title">{name}</h4>
-                <p class="product-card-meta">{meta_text}</p>
-            </div>
-        </a>
+        <div class="product-card-image-wrap">
+            <img class="product-card-image" src="{image_url}" alt="{name}">
+        </div>
+        <div class="product-card-body">
+            <h4 class="product-card-title">{name}</h4>
+            <p class="product-card-meta">{meta_text}</p>
+        </div>
         <div class="product-card-price-row">
-            <span class="product-card-price">₹{price}</span>
-            <a href="?action=add&sku={sku_id}" target="_self" class="product-card-add-btn">ADD</a>
+            <span class="product-card-price">₹{price:.0f}</span>
         </div>
     </div>
     """)
@@ -714,35 +711,26 @@ def render_cart_drawer():
 
 
 # --- DESKTOP NAVBAR HEADER ---
-subtotal = get_cart_subtotal()
-cart_count = get_cart_count()
-
-# Desktop header navbar with explicit flex styling so My Cart button is aligned on the far right above search bar
-header_html = (
-    f'<div style="display: flex; align-items: center; justify-content: space-between; width: 100%; padding: 12px 16px; background-color: #ffffff; border: 1px solid #f3f4f6; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); margin-bottom: 16px;">'
-    f'<div style="display: flex; align-items: center; gap: 16px;">'
-    f'<div style="display: flex; align-items: center; cursor: pointer; user-select: none;">'
-    f'<span style="font-family: \'Outfit\', sans-serif; font-size: 24px; font-weight: 900; color: #F7C200; background: #1C1C1C; padding: 2px 10px; border-radius: 8px 0 0 8px;">blink</span>'
-    f'<span style="font-family: \'Outfit\', sans-serif; font-size: 24px; font-weight: 900; color: #ffffff; background: #0C831F; padding: 2px 10px; border-radius: 0 8px 8px 0;">it</span>'
-    f'</div>'
-    f'<div style="display: flex; flex-direction: column; font-size: 12px; font-family: \'Outfit\', sans-serif;">'
-    f'<span style="font-weight: 800; color: #111827;">Delivery in 8 minutes</span>'
-    f'<span style="color: #6b7280; font-weight: 600;">DLF Phase 3, Gurugram ▾</span>'
-    f'</div>'
-    f'</div>'
-    f'<div style="display: flex; align-items: center; gap: 16px;">'
-    f'<span style="font-size: 14px; font-weight: 700; color: #374151; cursor: pointer; font-family: \'Outfit\', sans-serif;">Login</span>'
-    f'<a href="?action=open_cart" target="_self" style="display: flex; align-items: center; gap: 10px; background-color: #0C831F; color: #ffffff; padding: 8px 18px; border-radius: 12px; font-weight: 800; font-size: 14px; text-decoration: none; box-shadow: 0 2px 6px rgba(12,131,31,0.25); font-family: \'Outfit\', sans-serif;">'
-    f'<span style="font-size: 18px;">🛒</span>'
-    f'<div style="display: flex; flex-direction: column; text-align: left; line-height: 1.1;">'
-    f'<span style="font-size: 13px; font-weight: 800; letter-spacing: 0.2px;">{cart_count} Item{"s" if cart_count != 1 else ""}</span>'
-    f'<span style="font-size: 11px; font-weight: 600; opacity: 0.9;">₹{subtotal:.0f}</span>'
-    f'</div>'
-    f'</a>'
-    f'</div>'
-    f'</div>'
-)
-st.markdown(header_html, unsafe_allow_html=True)
+header_c1, header_c2 = st.columns([8, 3])
+with header_c1:
+    st.markdown(textwrap.dedent("""
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+        <div style="display: flex; align-items: center; cursor: pointer; user-select: none;">
+            <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; color: #F7C200; background: #1C1C1C; padding: 2px 10px; border-radius: 8px 0 0 8px;">blink</span>
+            <span style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 900; color: #ffffff; background: #0C831F; padding: 2px 10px; border-radius: 0 8px 8px 0;">it</span>
+        </div>
+        <div style="display: flex; flex-direction: column; font-size: 12px; font-family: 'Outfit', sans-serif;">
+            <span style="font-weight: 800; color: #111827;">Delivery in 8 minutes</span>
+            <span style="color: #6b7280; font-weight: 600;">DLF Phase 3, Gurugram ▾</span>
+        </div>
+    </div>
+    """), unsafe_allow_html=True)
+with header_c2:
+    subtotal = get_cart_subtotal()
+    cart_count = get_cart_count()
+    if st.button(f"🛒 My Cart ({cart_count}) • ₹{subtotal:.0f}", key="main_header_cart_button", use_container_width=True):
+        st.session_state.show_cart = not st.session_state.show_cart
+        st.rerun()
 
 # 2. Main Page Search Box (Visually Appealing Search Bar)
 search_col1, search_col2 = st.columns([10, 2])
@@ -981,6 +969,16 @@ else:
                         ),
                         unsafe_allow_html=True,
                     )
+                    bc1, bc2 = st.columns(2)
+                    with bc1:
+                        if st.button("Details 👁️", key=f"srch_det_{sku_id}"):
+                            st.session_state.selected_product = sku_id
+                            st.session_state.show_cart = False
+                            st.rerun()
+                    with bc2:
+                        if st.button("+ ADD 🛒", key=f"srch_add_{sku_id}"):
+                            add_to_cart(sku_id, name, price, category)
+                            st.rerun()
         else:
             st.info("No matching products found. Try another search query!")
             
@@ -1061,6 +1059,16 @@ else:
                     ),
                     unsafe_allow_html=True,
                 )
+                bc1, bc2 = st.columns(2)
+                with bc1:
+                    if st.button("Details 👁️", key=f"stp_det_{s['sku_id']}"):
+                        st.session_state.selected_product = s["sku_id"]
+                        st.session_state.show_cart = False
+                        st.rerun()
+                with bc2:
+                    if st.button("+ ADD 🛒", key=f"stp_add_{s['sku_id']}"):
+                        add_to_cart(s["sku_id"], s["name"], s["price"], s["cat"])
+                        st.rerun()
 
 # --- FLOATING OVERLAY CART DRAWER ---
 render_cart_drawer()
