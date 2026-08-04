@@ -585,10 +585,18 @@ def render_cart_drawer():
     if not st.session_state.show_cart:
         return
 
-    # Header Row
+    # Modern Header Row with Blinkit Brand Colors
     h_col1, h_col2 = st.columns([7, 3])
     with h_col1:
-        st.markdown('<h3 style="font-family: \'Outfit\', sans-serif; font-size: 21px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>', unsafe_allow_html=True)
+        st.markdown(textwrap.dedent("""
+        <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="background: linear-gradient(135deg, #1C1C1C 0%, #0F172A 100%); padding: 6px 12px; border-radius: 10px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                <span style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: #F7C200;">blink</span>
+                <span style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 900; color: #ffffff; background: #0C831F; padding: 1px 6px; border-radius: 4px;">it</span>
+            </div>
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 900; color: #0f172a; margin: 0;">🛒 My Cart</h3>
+        </div>
+        """), unsafe_allow_html=True)
     with h_col2:
         if st.button("✕ Close", key="cart_drawer_close_btn", use_container_width=True):
             st.session_state.show_cart = False
@@ -597,10 +605,10 @@ def render_cart_drawer():
     # If cart is empty
     if not st.session_state.cart:
         st.markdown(textwrap.dedent("""
-        <div style="background: white; border-radius: 16px; padding: 32px 18px; text-align: center; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 12px rgba(0,0,0,0.04);">
-            <div style="font-size: 48px; margin-bottom: 10px;">🛒</div>
-            <h4 style="font-size: 18px; font-weight: 900; color: #0f172a; margin: 0 0 8px 0;">Your cart is empty</h4>
-            <p style="font-size: 14px; color: #64748b; margin: 0; line-height: 1.4;">Explore fresh products and add items to unlock 10-minute delivery in DLF Phase 3!</p>
+        <div style="background: linear-gradient(135deg, #ffffff 0%, #fff9e5 100%); border-radius: 18px; padding: 32px 18px; text-align: center; border: 1.5px solid #fde68a; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 14px rgba(247,194,0,0.12);">
+            <div style="font-size: 52px; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">🛒</div>
+            <h4 style="font-size: 19px; font-weight: 900; color: #0f172a; margin: 0 0 8px 0;">Your cart is empty</h4>
+            <p style="font-size: 13px; color: #64748b; margin: 0; line-height: 1.4; font-weight: 500;">Explore fresh products and add items to unlock <strong style="color: #0C831F;">10-minute express delivery</strong> in DLF Phase 3!</p>
         </div>
         """), unsafe_allow_html=True)
         return
@@ -612,29 +620,36 @@ def render_cart_drawer():
     surge_charge = 30.0
     grand_total = subtotal + delivery_charge + handling_charge + surge_charge
 
-    # Delivery Badge
+    # Colorful Delivery Timer Badge
     st.markdown(textwrap.dedent(f"""
-    <div style="background: white; border-radius: 14px; padding: 14px 16px; border: 1px solid #e2e8f0; margin-top: 10px; margin-bottom: 12px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
+    <div style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-radius: 16px; padding: 14px 16px; border: 1.5px solid #fde68a; margin-top: 10px; margin-bottom: 12px; font-family: 'Outfit', sans-serif; box-shadow: 0 3px 10px rgba(245,158,11,0.08);">
         <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="font-size: 24px;">⏱️</span>
+            <div style="width: 42px; height: 42px; border-radius: 12px; background: #F7C200; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 2px 6px rgba(247,194,0,0.3); flex-shrink: 0;">
+                ⏱️
+            </div>
             <div>
-                <h4 style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 0;">Delivery in 16 minutes</h4>
-                <p style="font-size: 13px; color: #64748b; margin: 2px 0 0 0; font-weight: 600;">Shipment of {total_items} item{"s" if total_items != 1 else ""}</p>
+                <h4 style="font-size: 15px; font-weight: 900; color: #0f172a; margin: 0; display: flex; align-items: center; gap: 6px;">
+                    Delivery in 16 minutes <span style="font-size: 9px; background: #0C831F; color: white; padding: 2px 6px; border-radius: 10px; font-weight: 800;">EXPRESS</span>
+                </h4>
+                <p style="font-size: 13px; color: #475569; margin: 2px 0 0 0; font-weight: 600;">Shipment of {total_items} item{"s" if total_items != 1 else ""} • DLF Phase 3 Dark Store</p>
             </div>
         </div>
     </div>
     """), unsafe_allow_html=True)
 
-    # Cart Items List
+    # Cart Items List with Left Green Accent Border
     for sku_id, item in list(st.session_state.cart.items()):
         img = get_product_image_url(sku_id, item["name"])
         st.markdown(textwrap.dedent(f"""
-        <div style="background: white; border-radius: 12px; padding: 12px 14px; border: 1px solid #e2e8f0; margin-bottom: 8px; font-family: 'Outfit', sans-serif;">
+        <div style="background: white; border-radius: 14px; padding: 12px 14px; border: 1px solid #e2e8f0; border-left: 4px solid #0C831F; margin-bottom: 8px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 6px rgba(0,0,0,0.02);">
             <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="{img}" style="width: 50px; height: 50px; object-fit: contain; border-radius: 8px; border: 1px solid #e2e8f0; padding: 3px; background: white; flex-shrink: 0;">
+                <img src="{img}" style="width: 52px; height: 52px; object-fit: contain; border-radius: 10px; border: 1px solid #f1f5f9; padding: 4px; background: #fafafa; flex-shrink: 0;">
                 <div style="flex: 1;">
                     <p style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.3;">{item["name"]}</p>
-                    <p style="font-size: 14px; font-weight: 900; color: #0C831F; margin: 3px 0 0 0;">₹{item["price"] * item["qty"]:.0f}</p>
+                    <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                        <span style="font-size: 14px; font-weight: 900; color: #0C831F; background: #ecfdf5; padding: 2px 8px; border-radius: 6px; border: 1px solid #a7f3d0;">₹{item["price"] * item["qty"]:.0f}</span>
+                        <span style="font-size: 11px; color: #94a3b8; font-weight: 600;">₹{item["price"]:.0f} each</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -648,13 +663,13 @@ def render_cart_drawer():
                     del st.session_state.cart[sku_id]
                 st.rerun()
         with q_col2:
-            st.markdown(f'<div style="text-align: center; font-weight: 900; font-size: 15px; font-family: \'Outfit\', sans-serif; margin-top: 4px; color: #0f172a;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="text-align: center; font-weight: 900; font-size: 15px; font-family: \'Outfit\', sans-serif; margin-top: 4px; color: #0f172a; background: #f8fafc; padding: 4px 0; border-radius: 8px; border: 1px solid #e2e8f0;">Qty: {item["qty"]}</div>', unsafe_allow_html=True)
         with q_col3:
             if st.button("+", key=f"drawer_inc_{sku_id}", use_container_width=True):
                 st.session_state.cart[sku_id]["qty"] += 1
                 st.rerun()
 
-    # Category-Matched Recommendations
+    # Category-Matched Recommendations with Glowing Badges
     cart_skus = list(st.session_state.cart.keys())
     cart_items_list = list(st.session_state.cart.values())
     first_item_name = cart_items_list[0]["name"] if cart_items_list else "this item"
@@ -663,8 +678,9 @@ def render_cart_drawer():
 
     if valid_recs:
         st.markdown(textwrap.dedent("""
-        <div style="margin-top: 16px; margin-bottom: 10px; font-family: 'Outfit', sans-serif;">
-            <h4 style="font-size: 13px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0; letter-spacing: 0.3px;">People who bought this also bought this</h4>
+        <div style="margin-top: 18px; margin-bottom: 10px; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 6px;">
+            <span style="background: #F7C200; color: #1C1C1C; font-size: 12px; font-weight: 900; padding: 2px 6px; border-radius: 6px;">PEOPLE ALSO BOUGHT</span>
+            <h4 style="font-size: 12px; font-weight: 900; color: #0f172a; text-transform: uppercase; margin: 0; letter-spacing: 0.3px;">Frequently Bought Together</h4>
         </div>
         """), unsafe_allow_html=True)
 
@@ -680,26 +696,38 @@ def render_cart_drawer():
             r_col1, r_col2 = st.columns([7, 3])
             with r_col1:
                 st.markdown(textwrap.dedent(f"""
-                <div style="background: white; border-radius: 12px; padding: 10px 12px; border: 1px solid #e2e8f0; font-family: 'Outfit', sans-serif; margin-bottom: 4px;">
-                    <span style="font-size: 11px; font-weight: 800; color: #0C831F; background: #ecfdf5; padding: 3px 8px; border-radius: 6px; display: inline-block; line-height: 1.3;">{social_proof_text}</span>
-                    <p style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 5px 0 0 0; line-height: 1.3;">{r["name"]}</p>
-                    <p style="font-size: 13px; font-weight: 900; color: #475569; margin: 2px 0 0 0;">₹{r["price"]:.0f}</p>
+                <div style="background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%); border-radius: 14px; padding: 10px 12px; border: 1.5px solid #bbf7d0; font-family: 'Outfit', sans-serif; margin-bottom: 4px; box-shadow: 0 2px 6px rgba(12,131,31,0.04);">
+                    <span style="font-size: 11px; font-weight: 800; color: #065f46; background: #d1fae5; padding: 3px 8px; border-radius: 6px; display: inline-block; line-height: 1.3; border: 1px solid #a7f3d0;">{social_proof_text}</span>
+                    <p style="font-size: 14px; font-weight: 800; color: #0f172a; margin: 6px 0 0 0; line-height: 1.3;">{r["name"]}</p>
+                    <p style="font-size: 13px; font-weight: 900; color: #0C831F; margin: 2px 0 0 0;">₹{r["price"]:.0f}</p>
                 </div>
                 """), unsafe_allow_html=True)
             with r_col2:
-                if st.button("+ ADD", key=f"drawer_rec_add_{r['sku_id']}_{idx}", use_container_width=True):
+                if st.button("+ ADD 🛒", key=f"drawer_rec_add_{r['sku_id']}_{idx}", use_container_width=True):
                     add_to_cart(r["sku_id"], r["name"], r["price"], r["category"])
                     st.rerun()
 
-    # Bill details & Checkout Button
+    # Bill Details & Checkout CTA with Color Accents
     st.markdown(textwrap.dedent(f"""
-    <div style="background: white; border-radius: 16px; padding: 16px; border: 1px solid #e2e8f0; margin-top: 16px; font-family: 'Outfit', sans-serif; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
-        <h4 style="font-size: 16px; font-weight: 900; color: #0f172a; margin: 0 0 12px 0;">Bill details</h4>
-        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Items total</span><span style="font-weight: 800; color: #0f172a;">₹{subtotal:.0f}</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Delivery charge</span><span style="font-weight: 800; color: #0f172a;">₹{delivery_charge:.0f}</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Handling charge</span><span style="font-weight: 800; color: #0f172a;">₹{handling_charge:.0f}</span></div>
-        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 6px; font-weight: 600;"><span>Surge charge</span><span style="font-weight: 800; color: #0f172a;">₹{surge_charge:.0f}</span></div>
-        <div style="padding-top: 10px; border-top: 1px solid #e2e8f0; display: flex; justify-content: space-between; margin-top: 8px; font-weight: 900; font-size: 17px; color: #0f172a;"><span>Grand Total</span><span style="color: #0C831F;">₹{grand_total:.0f}</span></div>
+    <div style="background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%); border-radius: 18px; padding: 16px; border: 1.5px solid #e2e8f0; margin-top: 18px; font-family: 'Outfit', sans-serif; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">
+        <h4 style="font-size: 16px; font-weight: 900; color: #0f172a; margin: 0 0 12px 0; display: flex; align-items: center; gap: 6px;">
+            <span>🧾</span> Bill details
+        </h4>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 8px; font-weight: 600;">
+            <span>📦 Items total</span><span style="font-weight: 800; color: #0f172a;">₹{subtotal:.0f}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 8px; font-weight: 600;">
+            <span>🚴 Delivery charge</span><span style="font-weight: 800; color: #0C831F;">₹{delivery_charge:.0f}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 8px; font-weight: 600;">
+            <span>🛍️ Handling charge</span><span style="font-weight: 800; color: #0f172a;">₹{handling_charge:.0f}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 14px; color: #475569; margin-bottom: 8px; font-weight: 600;">
+            <span>⚡ Surge charge</span><span style="font-weight: 800; color: #d97706;">₹{surge_charge:.0f}</span>
+        </div>
+        <div style="background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%); border: 1.5px solid #a7f3d0; border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; margin-top: 10px; font-weight: 900; font-size: 18px; color: #065f46;">
+            <span>Grand Total</span><span>₹{grand_total:.0f}</span>
+        </div>
     </div>
     """), unsafe_allow_html=True)
 
