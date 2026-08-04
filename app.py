@@ -775,14 +775,12 @@ if not is_pdp_active:
 is_searching = bool(search_q)
 is_filtering = st.session_state.active_category != "All"
 
-# Render side-by-side layout when cart drawer is open
+# Render cart drawer in sidebar panel when cart is active
 if st.session_state.show_cart:
-    main_view_col, cart_view_col = st.columns([7, 5])
-    with cart_view_col:
+    with st.sidebar:
         render_cart_drawer()
-    page_container = main_view_col
-else:
-    page_container = st.container()
+
+page_container = st.container()
 
 with page_container:
     if is_pdp_active:
