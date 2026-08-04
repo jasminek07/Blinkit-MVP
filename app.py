@@ -26,7 +26,7 @@ st.set_page_config(
     page_title="Blinkit Contextual Trust & Recs Engine",
     page_icon="⚡",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
 # Custom Style Block with Tailwind and Google Fonts
@@ -775,10 +775,43 @@ if not is_pdp_active:
 is_searching = bool(search_q)
 is_filtering = st.session_state.active_category != "All"
 
-# Render cart drawer in sidebar panel when cart is active
+# Side Navigation Bar Drawer Styling & Rendering for Cart
 if st.session_state.show_cart:
+    st.markdown(textwrap.dedent("""
+    <style>
+    section[data-testid="stSidebar"] {
+        display: block !important;
+        position: fixed !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        width: 440px !important;
+        min-width: 340px !important;
+        height: 100vh !important;
+        background-color: #ffffff !important;
+        box-shadow: -8px 0 32px rgba(0, 0, 0, 0.22) !important;
+        z-index: 999999 !important;
+        border-left: 1px solid #e2e8f0 !important;
+    }
+    button[data-testid="stSidebarCollapseButton"] {
+        display: none !important;
+    }
+    div[data-testid="stSidebarUserContent"] {
+        padding-top: 1rem !important;
+        padding-bottom: 2rem !important;
+    }
+    </style>
+    """), unsafe_allow_html=True)
     with st.sidebar:
         render_cart_drawer()
+else:
+    st.markdown(textwrap.dedent("""
+    <style>
+    section[data-testid="stSidebar"] {
+        display: none !important;
+    }
+    </style>
+    """), unsafe_allow_html=True)
 
 page_container = st.container()
 
