@@ -356,11 +356,14 @@ def get_product_image_url(sku_id, name=""):
         "SKU-STAPLE-WASH": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=500&auto=format&fit=crop",
         "SKU-STAPLE-MILK": "https://images.unsplash.com/photo-1563636619-e9143da7973b?w=500&auto=format&fit=crop",
         "SKU-STAPLE-BREAD": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop",
+        "SKU-APPLES": "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500&auto=format&fit=crop",
         "SKU-SUNSCREEN": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=500&auto=format&fit=crop",
         "SKU-LIPBALM": "https://images.unsplash.com/photo-1617897903246-719242758050?w=500&auto=format&fit=crop",
+        "SKU-SHAMPOO": "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=500&auto=format&fit=crop",
         "SKU-CABLE": "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop",
         "SKU-BLENDER": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&auto=format&fit=crop",
         "SKU-AIRPODS": "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop",
+        "SKU-SPEAKER": "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&auto=format&fit=crop",
         "SKU-SCRUNCHIE": "https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=500&auto=format&fit=crop",
         "SKU-SOCKS": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500&auto=format&fit=crop",
         "SKU-TSHIRT": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop",
@@ -372,7 +375,13 @@ def get_product_image_url(sku_id, name=""):
         
     # Keyword fallback matching
     name_lower = name.lower()
-    if "coffee" in name_lower:
+    if "apple" in name_lower or "fruit" in name_lower:
+        return "https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=500&auto=format&fit=crop"
+    elif "shampoo" in name_lower or "conditioner" in name_lower:
+        return "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=500&auto=format&fit=crop"
+    elif "speaker" in name_lower or "audio" in name_lower or "sound" in name_lower:
+        return "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&auto=format&fit=crop"
+    elif "coffee" in name_lower:
         return "https://images.unsplash.com/photo-1559056199-641a0ac8b55e?w=500&auto=format&fit=crop"
     elif "bread" in name_lower or "toast" in name_lower or "pav" in name_lower:
         return "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&auto=format&fit=crop"

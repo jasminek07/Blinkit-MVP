@@ -50,15 +50,19 @@ def populate_sku_catalog():
         ("SKU-STAPLE-COFFEE", "Premium Coffee Beans", 450.0, "Grocery", 4.8, 1250),
         ("SKU-STAPLE-MILK", "Organic Whole Milk 1L", 75.0, "Grocery", 4.7, 4500),
         ("SKU-STAPLE-BREAD", "Whole Wheat Bread 400g", 50.0, "Grocery", 4.5, 3800),
+        ("SKU-APPLES", "Fresh Royal Gala Apples 500g", 120.0, "Grocery", 4.8, 1420),
+
         # Beauty / Skincare
         ("SKU-STAPLE-WASH", "Foaming Face Wash", 299.0, "Beauty/Skincare", 4.6, 920),
         ("SKU-SUNSCREEN", "Neutrogena Sunscreen SPF 50 Mini", 185.0, "Beauty/Skincare", 4.8, 120),
         ("SKU-LIPBALM", "Nivea Strawberry Shine Lip Balm 4.8g", 149.0, "Beauty/Skincare", 4.7, 540),
+        ("SKU-SHAMPOO", "L'Oreal Paris Extraordinary Oil Shampoo 180ml", 249.0, "Beauty/Skincare", 4.7, 830),
 
         # Electronics
         ("SKU-CABLE", "USB Type-C Fast Charging Cable", 150.0, "Electronics", 4.5, 850),
         ("SKU-BLENDER", "NutriPro Portable Personal Blender 300W", 999.0, "Electronics", 4.6, 380),
         ("SKU-AIRPODS", "Apple AirPods Pro (2nd Gen)", 19999.0, "Electronics", 4.9, 2100),
+        ("SKU-SPEAKER", "JBL Go 3 Eco Portable Bluetooth Speaker", 2499.0, "Electronics", 4.8, 1750),
 
         # Clothing
         ("SKU-SCRUNCHIE", "Silk Hair Scrunchies Pack of 3", 99.0, "Clothing", 4.7, 320),
