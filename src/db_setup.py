@@ -65,7 +65,7 @@ def populate_sku_catalog():
         ("SKU-SPEAKER", "JBL Go 3 Eco Portable Bluetooth Speaker", 2499.0, "Electronics", 4.8, 1750),
 
         # Clothing
-        ("SKU-SCRUNCHIE", "Silk Hair Scrunchies Pack of 3", 99.0, "Clothing", 4.7, 320),
+        ("SKU-SCARF", "Silk Printed Neck Scarf", 299.0, "Clothing", 4.7, 480),
         ("SKU-SOCKS", "Ankle Cotton Socks Pack of 2", 120.0, "Clothing", 4.4, 95),
         ("SKU-TSHIRT", "Classic Oversized Cotton T-Shirt", 499.0, "Clothing", 4.5, 430),
         ("SKU-JEANS", "Slim Fit Dark Blue Denim Jeans", 1299.0, "Clothing", 4.6, 610)

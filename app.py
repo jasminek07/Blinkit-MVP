@@ -364,9 +364,9 @@ def get_product_image_url(sku_id, name=""):
         "SKU-BLENDER": "https://images.unsplash.com/photo-1570222094114-d054a817e56b?w=500&auto=format&fit=crop",
         "SKU-AIRPODS": "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop",
         "SKU-SPEAKER": "https://images.unsplash.com/photo-1545454675-3531b543be5d?w=500&auto=format&fit=crop",
-        "SKU-SCRUNCHIE": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop",
-        "SKU-SOCKS": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop",
-        "SKU-TSHIRT": "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop",
+        "SKU-SCARF": "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=500&auto=format&fit=crop",
+        "SKU-SOCKS": "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500&auto=format&fit=crop",
+        "SKU-TSHIRT": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500&auto=format&fit=crop",
         "SKU-JEANS": "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop"
     }
     
@@ -399,14 +399,14 @@ def get_product_image_url(sku_id, name=""):
         return "https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop"
     elif "cable" in name_lower or "charge" in name_lower or "usb" in name_lower:
         return "https://images.unsplash.com/photo-1583863788434-e58a36330cf0?w=500&auto=format&fit=crop"
+    elif "scarf" in name_lower or "stole" in name_lower or "wrap" in name_lower:
+        return "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=500&auto=format&fit=crop"
     elif "shirt" in name_lower or "t-shirt" in name_lower or "top" in name_lower:
-        return "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500&auto=format&fit=crop"
+        return "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?w=500&auto=format&fit=crop"
     elif "jean" in name_lower or "denim" in name_lower or "pant" in name_lower or "trouser" in name_lower:
         return "https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=500&auto=format&fit=crop"
-    elif "scrunchie" in name_lower or "hair" in name_lower or "tie" in name_lower:
-        return "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop"
     elif "sock" in name_lower or "apparel" in name_lower:
-        return "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=500&auto=format&fit=crop"
+        return "https://images.unsplash.com/photo-1586350977771-b3b0abd50c82?w=500&auto=format&fit=crop"
         
     return "https://images.unsplash.com/photo-1542838132-92c53300491e?w=500&auto=format&fit=crop"
 
